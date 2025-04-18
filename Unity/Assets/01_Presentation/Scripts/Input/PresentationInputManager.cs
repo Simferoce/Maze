@@ -44,12 +44,7 @@ namespace Game.Presentation
                 presentationManager.GameManager.InputManager.Write(buttonInputAction.Value);
 
             foreach (KeyValuePair<Core.InputAxisType, Core.InputAction> axisInputAction in axisInputActions)
-            {
-                if (presentationManager.GameManager.InputManager.GetAxis(axisInputAction.Value.InputAxisType) == axisInputAction.Value.Value)
-                    continue;
-
                 presentationManager.GameManager.InputManager.Write(axisInputAction.Value);
-            }
 
             buttonInputActions.Clear();
             axisInputActions.Clear();

@@ -36,17 +36,19 @@ namespace Game.Core
             switch (inputAction.InputType)
             {
                 case InputType.SetAxis:
-                    SetAxis(inputAction.InputAxisType, inputAction.Value);
+                    if (SetAxis(inputAction.InputAxisType, inputAction.Value))
+                        OnInputAction?.Invoke(inputAction);
+
                     break;
                 case InputType.ButtonDown:
                     SetButtonDown(inputAction.InputButtonType);
+                    OnInputAction?.Invoke(inputAction);
                     break;
                 case InputType.ButtonUp:
                     SetButtonUp(inputAction.InputButtonType);
+                    OnInputAction?.Invoke(inputAction);
                     break;
             }
-
-            OnInputAction?.Invoke(inputAction);
         }
 
         private void SetButtonDown(InputButtonType inputButton)
@@ -54,7 +56,6 @@ namespace Game.Core
             Assertion.IsTrue(inputButtonStates.ContainsKey(inputButton), $"The input button \"{inputButton}\" is missing from the preallocated array.");
 
             inputButtonStates[inputButton] = inputButtonStates[inputButton].SetButtonDown();
-
         }
 
         private void SetButtonUp(InputButtonType inputButton)
@@ -64,11 +65,15 @@ namespace Game.Core
             inputButtonStates[inputButton] = inputButtonStates[inputButton].SetButtonUp();
         }
 
-        private void SetAxis(InputAxisType inputAxisType, Fixed64 value)
+        private bool SetAxis(InputAxisType inputAxisType, Fixed64 value)
         {
             Assertion.IsTrue(inputAxisStates.ContainsKey(inputAxisType), $"The input axis \"{inputAxisType}\" is missing from the preallocated array.");
 
+            if (inputAxisStates[inputAxisType].Value == value)
+                return false;
+
             inputAxisStates[inputAxisType] = inputAxisStates[inputAxisType].Set(value);
+            return true;
         }
         #endregion
 

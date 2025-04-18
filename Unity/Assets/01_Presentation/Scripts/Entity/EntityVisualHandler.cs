@@ -24,7 +24,7 @@ namespace Game.Presentation
                 {
                     EntityPresentationDefinition entityPresentationDefinition = presentationManager.PresentationRegistry.Get<EntityPresentationDefinition>(entity.Definition.Id);
                     entityVisual = GameObject.Instantiate(entityPresentationDefinition.Prefab);
-                    entityVisual.Initialize(entity.Id);
+                    entityVisual.Initialize(presentationManager, entity.Id);
 
                     entities.Add(entityVisual);
                 }

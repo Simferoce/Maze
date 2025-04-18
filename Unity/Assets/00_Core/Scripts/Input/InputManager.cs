@@ -4,6 +4,9 @@ namespace Game.Core
 {
     public class InputManager
     {
+        public delegate void OnInputActionDelegate(InputAction inputAction);
+        public event OnInputActionDelegate OnInputAction;
+
         private Dictionary<InputButtonType, InputButtonState> inputButtonStates = new Dictionary<InputButtonType, InputButtonState>()
         {
             { InputButtonType.Right, new InputButtonState(InputButtonType.Right) },
@@ -11,10 +14,11 @@ namespace Game.Core
             { InputButtonType.Left, new InputButtonState(InputButtonType.Left) },
             { InputButtonType.Up, new InputButtonState(InputButtonType.Up) },
         };
+
         private Dictionary<InputAxisType, InputAxisState> inputAxisStates = new Dictionary<InputAxisType, InputAxisState>()
         {
-            {InputAxisType.Horizontal, new InputAxisState(InputButtonType.Right, InputButtonType.Left) },
-            {InputAxisType.Vertical, new InputAxisState(InputButtonType.Up, InputButtonType.Down) },
+            {InputAxisType.Horizontal, new InputAxisState(Fixed64.Zero) },
+            {InputAxisType.Vertical, new InputAxisState(Fixed64.Zero) },
         };
 
         private GameManager gameManager;
@@ -24,25 +28,47 @@ namespace Game.Core
             this.gameManager = gameManager;
         }
 
-        public void Update()
-        {
-            foreach (KeyValuePair<InputAxisType, InputAxisState> inputAxisState in inputAxisStates)
-                inputAxisState.Value.Update(this);
-        }
-
         #region Write
-        public void Press(InputButtonType inputButton)
+        public void Write(InputAction inputAction)
         {
-            Assertion.IsTrue(inputButtonStates.ContainsKey(inputButton), $"The input button \"{inputButton}\" is missing from the preallocated array.");
+            inputAction.Tick = gameManager.TimeManager.CurrentTick;
 
-            inputButtonStates[inputButton].Press();
+            switch (inputAction.InputType)
+            {
+                case InputType.SetAxis:
+                    SetAxis(inputAction.InputAxisType, inputAction.Value);
+                    break;
+                case InputType.ButtonDown:
+                    SetButtonDown(inputAction.InputButtonType);
+                    break;
+                case InputType.ButtonUp:
+                    SetButtonUp(inputAction.InputButtonType);
+                    break;
+            }
+
+            OnInputAction?.Invoke(inputAction);
         }
 
-        public void Unpress(InputButtonType inputButton)
+        private void SetButtonDown(InputButtonType inputButton)
         {
             Assertion.IsTrue(inputButtonStates.ContainsKey(inputButton), $"The input button \"{inputButton}\" is missing from the preallocated array.");
 
-            inputButtonStates[inputButton].Unpress();
+            inputButtonStates[inputButton] = inputButtonStates[inputButton].SetButtonDown();
+
+        }
+
+        private void SetButtonUp(InputButtonType inputButton)
+        {
+            Assertion.IsTrue(inputButtonStates.ContainsKey(inputButton), $"The input button \"{inputButton}\" is missing from the preallocated array.");
+
+            inputButtonStates[inputButton] = inputButtonStates[inputButton].SetButtonUp();
+        }
+
+        private void SetAxis(InputAxisType inputAxisType, Fixed64 value)
+        {
+            Assertion.IsTrue(inputAxisStates.ContainsKey(inputAxisType), $"The input axis \"{inputAxisType}\" is missing from the preallocated array.");
+
+            inputAxisStates[inputAxisType] = inputAxisStates[inputAxisType].Set(value);
         }
         #endregion
 

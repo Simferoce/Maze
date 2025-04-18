@@ -2,7 +2,8 @@
 {
     public enum InputType
     {
-        PressButtonDown,
-        PressButtonUp,
+        SetAxis,
+        ButtonDown,
+        ButtonUp,
     }
 }

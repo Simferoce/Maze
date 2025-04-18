@@ -11,14 +11,16 @@
             IsPress = false;
         }
 
-        public void Press()
+        public InputButtonState SetButtonDown()
         {
             IsPress = true;
+            return this;
         }
 
-        public void Unpress()
+        public InputButtonState SetButtonUp()
         {
             IsPress = false;
+            return this;
         }
     }
 }

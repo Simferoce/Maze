@@ -10,7 +10,7 @@
 
         public static void IsNotNull(object condition, string message)
         {
-            if (condition != null)
+            if (condition == null)
                 throw new AssertionException(message);
         }
     }

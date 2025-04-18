@@ -2,7 +2,7 @@
 {
     public class TimeManager
     {
-        public int CurrentTick { get; private set; }
+        public long CurrentTick { get; private set; }
 
         private GameManager gameManager;
 

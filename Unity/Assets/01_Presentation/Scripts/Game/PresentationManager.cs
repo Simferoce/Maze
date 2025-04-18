@@ -9,26 +9,33 @@ namespace Game.Presentation
     {
         [SerializeField] private PresentationRegistry presentationRegistry;
 
-        public GameManager GameManager { get => gameManager; set => gameManager = value; }
         public PresentationRegistry PresentationRegistry { get => presentationRegistry; set => presentationRegistry = value; }
+        public PresentationInputManager PresentationInputManager { get; set; }
+        public GameManager GameManager { get; set; }
 
-        private Game.Core.GameManager gameManager;
         private UnityLogger unityLogger;
         private EntityVisualHandler entityVisualHandler;
 
         private void Awake()
         {
             unityLogger = new UnityLogger();
-            gameManager = new Core.GameManager(unityLogger);
+            GameManager = new Core.GameManager(unityLogger);
             entityVisualHandler = new EntityVisualHandler(this);
+            PresentationInputManager = new PresentationInputManager(this);
 
-            gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
-            gameManager.Start(new Guid(presentationRegistry.PlayerDefinition.Id));
+            GameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
+            GameManager.Start(new Game.Core.GameModeParameter() { PlayerEntityDefinition = new Guid(presentationRegistry.PlayerDefinition.Id) });
+        }
+
+        private void Update()
+        {
+            PresentationInputManager.Update();
         }
 
         private void FixedUpdate()
         {
-            gameManager.Update();
+            PresentationInputManager.Flush();
+            GameManager.Update();
             entityVisualHandler.Update();
         }
     }

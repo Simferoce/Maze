@@ -1,0 +1,19 @@
+{
+    "name": "game.presentation.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3689088c0963bcf428755462c64be719",
+        "GUID:ba8f94331651c1a49bf9d7e147caf5dc"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

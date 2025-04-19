@@ -5,7 +5,7 @@ namespace Game.Core
     public class RecordSession
     {
         public GameModeParameter GameModeParameter { get; private set; }
-        private List<InputAction> inputActions = new List<InputAction>();
+        public List<InputAction> InputActions { get; private set; } = new List<InputAction>();
 
         public RecordSession(GameModeParameter gameModeParameter)
         {
@@ -14,7 +14,7 @@ namespace Game.Core
 
         public void Register(InputAction inputAction)
         {
-            inputActions.Add(inputAction);
+            InputActions.Add(inputAction);
         }
     }
 }

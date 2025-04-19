@@ -2,9 +2,9 @@
 {
     public class Recorder
     {
-        private GameManager gameManager;
+        public RecordSession CurrentSession { get; private set; }
 
-        private RecordSession currentSession;
+        private GameManager gameManager;
 
         public Recorder(GameManager gameManager)
         {
@@ -16,14 +16,14 @@
 
         public void StartSession(GameModeParameter gameModeParameter)
         {
-            currentSession = new RecordSession(gameModeParameter);
+            CurrentSession = new RecordSession(gameModeParameter);
         }
 
         private void OnInputAction(InputAction inputAction)
         {
-            Assertion.IsNotNull(currentSession, $"Received input before the session was started.");
+            Assertion.IsNotNull(CurrentSession, $"Received input before the session was started.");
 
-            currentSession.Register(inputAction);
+            CurrentSession.Register(inputAction);
         }
     }
 }

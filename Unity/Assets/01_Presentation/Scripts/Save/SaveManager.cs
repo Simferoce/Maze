@@ -6,12 +6,12 @@ namespace Game.Presentation
     {
         public SaveCollection<RecordSessionSave> Sessions { get; private set; }
 
-        private PresentationManager presentationManager;
+        private PlatformManager platformManager;
 
-        public SaveManager(PresentationManager presentationManager)
+        public SaveManager(PlatformManager platformManager)
         {
-            this.presentationManager = presentationManager;
-            Sessions = new SaveCollection<RecordSessionSave>(presentationManager, $"{Application.persistentDataPath}/Sessions");
+            this.platformManager = platformManager;
+            Sessions = new SaveCollection<RecordSessionSave>(platformManager, $"{Application.persistentDataPath}/Sessions");
         }
 
         public void Load()

@@ -2,7 +2,7 @@
 
 namespace Game.Core
 {
-    public struct GameModeParameter
+    public class GameModeParameter
     {
         public Guid PlayerEntityDefinition { get; set; }
     }

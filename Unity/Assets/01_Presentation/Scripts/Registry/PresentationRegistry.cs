@@ -6,8 +6,7 @@ using UnityEngine;
 
 namespace Game.Core
 {
-    [Serializable]
-    public class PresentationRegistry
+    public class PresentationRegistry : MonoBehaviour
     {
         [SerializeField] private List<EntityPresentationDefinition> definitions;
         [SerializeField] private EntityPresentationDefinition playerDefinition;

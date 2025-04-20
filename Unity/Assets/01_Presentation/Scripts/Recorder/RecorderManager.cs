@@ -7,20 +7,22 @@ namespace Game.Presentation
 {
     public class RecorderManager
     {
-        private PresentationManager presentationManager;
+        private GameManager gameManager;
+        private SaveManager saveManager;
         private RecordSession currentSession;
 
-        public RecorderManager(PresentationManager presentationManager)
+        public RecorderManager(SaveManager saveManager, GameManager gameManager)
         {
-            this.presentationManager = presentationManager;
-            presentationManager.GameManager.OnGameStarted += OnGameStarted;
-            presentationManager.GameManager.OnGameFinished += OnGameFinished;
+            this.saveManager = saveManager;
+            this.gameManager = gameManager;
+            gameManager.OnGameStarted += OnGameStarted;
+            gameManager.OnGameFinished += OnGameFinished;
         }
 
         private void OnGameStarted(Core.GameModeParameter gameModeParameter)
         {
             currentSession = new RecordSession(gameModeParameter);
-            presentationManager.GameManager.InputManager.OnInputAction += OnInputAction;
+            gameManager.InputManager.OnInputAction += OnInputAction;
         }
 
         private void OnInputAction(InputAction inputAction)
@@ -30,12 +32,12 @@ namespace Game.Presentation
 
         private void OnGameFinished()
         {
-            presentationManager.GameManager.InputManager.OnInputAction -= OnInputAction;
+            gameManager.InputManager.OnInputAction -= OnInputAction;
             RecordSessionSave recordSessionSave = new RecordSessionSave();
             recordSessionSave.GameModeParameter = JsonConvert.SerializeObject(currentSession.GameModeParameter);
             recordSessionSave.Inputs = currentSession.InputActions.Select(x => new RecordSessionSave.InputActionSave() { InputType = x.InputType, Tick = x.Tick, Value = x.Value }).ToList();
-            presentationManager.SaveManager.Sessions.Add(recordSessionSave, $"{DateTime.Now.Ticks}");
-            presentationManager.SaveManager.Sessions.Flush();
+            saveManager.Sessions.Add(recordSessionSave, $"{DateTime.Now.Ticks}");
+            saveManager.Sessions.Flush();
         }
     }
 }

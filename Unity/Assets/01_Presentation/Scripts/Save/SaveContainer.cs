@@ -5,14 +5,14 @@ namespace Game.Presentation
 {
     public class SaveContainer<T>
     {
-        private PresentationManager presentationManager;
+        private PlatformManager platformManager;
         private string location;
         private bool isDirty = false;
         private T data;
 
-        public SaveContainer(PresentationManager presentationManager, string location)
+        public SaveContainer(PlatformManager platformManager, string location)
         {
-            this.presentationManager = presentationManager;
+            this.platformManager = platformManager;
             this.location = location;
             this.location += ".json";
         }
@@ -24,7 +24,7 @@ namespace Game.Presentation
 
             string json = JsonConvert.SerializeObject(this.data, Formatting.Indented);
             byte[] bytes = Encoding.UTF8.GetBytes(json);
-            presentationManager.PlatformManager.Save(location, bytes);
+            platformManager.Save(location, bytes);
             isDirty = false;
         }
 
@@ -36,10 +36,10 @@ namespace Game.Presentation
 
         public void Load()
         {
-            if (!presentationManager.PlatformManager.FileExists(location))
+            if (!platformManager.FileExists(location))
                 return;
 
-            byte[] bytes = presentationManager.PlatformManager.Load(location);
+            byte[] bytes = platformManager.Load(location);
             string json = Encoding.UTF8.GetString(bytes);
             data = JsonConvert.DeserializeObject<T>(json);
         }

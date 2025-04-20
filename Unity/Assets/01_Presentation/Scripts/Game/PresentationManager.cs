@@ -1,5 +1,4 @@
 using Game.Core;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -14,6 +13,7 @@ namespace Game.Presentation
         public PresentationInputManager PresentationInputManager { get; set; }
         public SaveManager SaveManager { get; set; }
         public PlatformManager PlatformManager { get; set; }
+        public RecorderManager RecorderManager { get; set; }
         public GameManager GameManager { get; set; }
 
         private UnityLogger unityLogger;
@@ -27,6 +27,7 @@ namespace Game.Presentation
             PresentationInputManager = new PresentationInputManager(this);
             SaveManager = new SaveManager(this);
             PlatformManager = new PlatformManager();
+            RecorderManager = new RecorderManager(this);
 
             GameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
             GameManager.Start(new Game.Core.GameModeParameter() { PlayerEntityDefinition = new Guid(presentationRegistry.PlayerDefinition.Id) });
@@ -46,12 +47,7 @@ namespace Game.Presentation
 
         private void OnApplicationQuit()
         {
-            Core.RecordSession currentSession = GameManager.Recorder.CurrentSession;
-            RecordSessionSave recordSessionSave = new RecordSessionSave();
-            recordSessionSave.GameModeParameter = JsonConvert.SerializeObject(currentSession.GameModeParameter);
-            recordSessionSave.Inputs = currentSession.InputActions.Select(x => new RecordSessionSave.InputActionSave() { InputAxisType = x.InputAxisType, InputButtonType = x.InputButtonType, InputType = x.InputType, Tick = x.Tick, Value = x.Value }).ToList();
-            SaveManager.Sessions.Add(recordSessionSave, $"{DateTime.Now.Ticks}");
-            SaveManager.Sessions.Flush();
+            GameManager.Finish();
         }
     }
 }

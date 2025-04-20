@@ -1,6 +1,8 @@
-﻿namespace Game.Core
+﻿using System;
+
+namespace Game.Core
 {
-    public abstract class Agent
+    public abstract class Agent : IDisposable
     {
         protected GameManager gameManager;
 
@@ -12,5 +14,9 @@
         }
 
         public abstract void Update();
+
+        public virtual void Dispose()
+        {
+        }
     }
 }

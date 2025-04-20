@@ -4,12 +4,16 @@ namespace Game.Core
 {
     public class GameManager
     {
+        public delegate void OnGameStartedDelegate(GameModeParameter gameModeParameter);
+        public delegate void OnGameFinishedDelegate();
+        public event OnGameStartedDelegate OnGameStarted;
+        public event OnGameFinishedDelegate OnGameFinished;
+
         public InputManager InputManager { get; private set; }
         public TimeManager TimeManager { get; private set; }
         public ILogger Logger { get; private set; }
         public Registry Registry { get; private set; }
         public WorldManager WorldManager { get; private set; }
-        public Recorder Recorder { get; private set; }
 
         private bool isInitialized = false;
         private bool isStarted = false;
@@ -22,7 +26,6 @@ namespace Game.Core
             InputManager = new InputManager(this);
             TimeManager = new TimeManager(this);
             WorldManager = new WorldManager(this);
-            Recorder = new Recorder(this);
         }
 
         public void Initialize(List<Definition> definitions)
@@ -41,7 +44,12 @@ namespace Game.Core
             Player player = new Player(this);
             player.Assign(playerAvatar);
 
-            Recorder.StartSession(gameModeParameter);
+            OnGameStarted?.Invoke(gameModeParameter);
+        }
+
+        public void Finish()
+        {
+            OnGameFinished?.Invoke();
         }
 
         public void Update()

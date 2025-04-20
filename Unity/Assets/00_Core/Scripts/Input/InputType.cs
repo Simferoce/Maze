@@ -2,8 +2,8 @@
 {
     public enum InputType
     {
-        SetAxis,
-        ButtonDown,
-        ButtonUp,
+        Undefined,
+        HorizontalAxis,
+        VerticalAxis,
     }
 }

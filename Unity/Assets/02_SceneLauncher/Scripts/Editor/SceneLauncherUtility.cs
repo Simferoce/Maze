@@ -12,6 +12,7 @@ namespace Game.SceneLauncher
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x => !x.IsAbstract && typeof(Launcher).IsAssignableFrom(x))
+                .OrderBy(x => x.GetCustomAttribute<LauncherAttribute>()?.Order ?? 0)
                 .ToList();
         }
 

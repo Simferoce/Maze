@@ -8,7 +8,7 @@ namespace Game.Presentation
         private RecordSession recordSession;
         private GameManager gameManager;
         private UnityLogger logger;
-        private int inputIndex = 0;
+        private int commandIndex = 0;
 
         public ReplayManager(RecordSession recordSession)
         {
@@ -19,11 +19,11 @@ namespace Game.Presentation
 
         public void FixedUpdate()
         {
-            while (recordSession.InputActions.Count > inputIndex && recordSession.InputActions[inputIndex].Tick == gameManager.TimeManager.CurrentTick)
+            while (recordSession.Commands.Count > commandIndex && recordSession.Commands[commandIndex].Tick == gameManager.TimeManager.CurrentTick)
             {
-                gameManager.InputManager.Execute(recordSession.InputActions[inputIndex]);
+                gameManager.CommandManager.Execute(recordSession.Commands[commandIndex]);
 
-                inputIndex++;
+                commandIndex++;
             }
 
             gameManager.Update();

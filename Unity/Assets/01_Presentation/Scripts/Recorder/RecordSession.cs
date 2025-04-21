@@ -6,27 +6,27 @@ namespace Game.Core
     public class RecordSession
     {
         public GameModeParameter GameModeParameter { get; private set; }
-        public List<InputAction> InputActions { get; private set; } = new List<InputAction>();
+        public List<Command> Commands { get; private set; } = new List<Command>();
 
         public RecordSession(GameModeParameter gameModeParameter)
         {
             GameModeParameter = gameModeParameter;
         }
 
-        public void Register(InputAction inputAction)
+        public void Register(Command command)
         {
-            if (inputAction.InputType == InputType.HorizontalAxis
-                || inputAction.InputType == InputType.VerticalAxis)
+            if (command.CommandType == ComandType.HorizontalAxis
+                || command.CommandType == ComandType.VerticalAxis)
             {
-                InputAction lastAction = InputActions.LastOrDefault(x => x.InputType == inputAction.InputType);
-                if (lastAction.InputType == InputType.Undefined || lastAction.Value != inputAction.Value)
+                Command lastAction = Commands.LastOrDefault(x => x.CommandType == command.CommandType);
+                if (lastAction.CommandType == ComandType.Undefined || lastAction.Value != command.Value)
                 {
-                    InputActions.Add(inputAction);
+                    Commands.Add(command);
                 }
             }
             else
             {
-                InputActions.Add(inputAction);
+                Commands.Add(command);
             }
         }
     }

@@ -9,35 +9,34 @@ namespace Game.Core
         public event OnGameStartedDelegate OnGameStarted;
         public event OnGameFinishedDelegate OnGameFinished;
 
-        public InputManager InputManager { get; private set; }
+        public CommandManager CommandManager { get; private set; }
         public TimeManager TimeManager { get; private set; }
         public ILogger Logger { get; private set; }
         public Registry Registry { get; private set; }
         public WorldManager WorldManager { get; private set; }
-
-        private bool isInitialized = false;
-        private bool isStarted = false;
+        public bool IsStarted { get; private set; } = false;
+        public bool IsInitialized { get; private set; } = false;
 
         public GameManager(ILogger logger)
         {
             Logger = logger;
 
             Registry = new Registry(this);
-            InputManager = new InputManager(this);
+            CommandManager = new CommandManager(this);
             TimeManager = new TimeManager(this);
             WorldManager = new WorldManager(this);
         }
 
         public void Initialize(List<Definition> definitions)
         {
-            isInitialized = true;
+            IsInitialized = true;
             Registry.Initialize(definitions);
         }
 
         public void Start(GameModeParameter gameModeParameter)
         {
-            Assertion.IsTrue(isInitialized, "The game has not been initialized yet.");
-            isStarted = true;
+            Assertion.IsTrue(IsInitialized, "The game has not been initialized yet.");
+            IsStarted = true;
 
             EntityDefinition entityDefinition = Registry.Get<EntityDefinition>(gameModeParameter.PlayerEntityDefinition);
             Entity playerAvatar = new Entity(this, entityDefinition);
@@ -54,8 +53,8 @@ namespace Game.Core
 
         public void Update()
         {
-            Assertion.IsTrue(isInitialized, "The game has not been initialized yet.");
-            Assertion.IsTrue(isStarted, "The game has not been started yet.");
+            Assertion.IsTrue(IsInitialized, "The game has not been initialized yet.");
+            Assertion.IsTrue(IsStarted, "The game has not been started yet.");
 
             TimeManager.Update();
             WorldManager.Update();

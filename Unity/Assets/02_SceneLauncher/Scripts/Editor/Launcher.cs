@@ -6,9 +6,13 @@ namespace Game.SceneLauncher
 {
     public abstract class Launcher
     {
+        public event Action OnModified;
+
         protected Dictionary<string, object> fields = new Dictionary<string, object>();
 
-        public event Action OnModified;
+        public virtual void Initialize()
+        {
+        }
 
         public abstract void Launch();
         public abstract void Load();

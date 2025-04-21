@@ -8,13 +8,13 @@
 
         public Player(GameManager gameManager) : base(gameManager)
         {
-            gameManager.InputManager.OnInputAction += InputManager_OnInputAction;
+            gameManager.CommandManager.OnCommandReceived += OnCommandReceived;
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            gameManager.InputManager.OnInputAction -= InputManager_OnInputAction;
+            gameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
         }
 
         public void Assign(Entity playerEntity)
@@ -22,15 +22,15 @@
             Avatar = playerEntity;
         }
 
-        private void InputManager_OnInputAction(InputAction inputAction)
+        private void OnCommandReceived(Command command)
         {
-            if (inputAction.InputType == InputType.HorizontalAxis)
+            if (command.CommandType == ComandType.HorizontalAxis)
             {
-                direction = new Vector2(inputAction.Value, direction.y);
+                direction = new Vector2(command.Value, direction.y);
             }
-            else if (inputAction.InputType == InputType.VerticalAxis)
+            else if (command.CommandType == ComandType.VerticalAxis)
             {
-                direction = new Vector2(direction.x, inputAction.Value);
+                direction = new Vector2(direction.x, command.Value);
             }
         }
 

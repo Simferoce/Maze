@@ -15,36 +15,48 @@ namespace Game.Presentation
         private RecorderManager recorderManager;
         private PlatformManager platformManager;
         private SaveManager saveManager;
-        private PresentationInputManager presentationInputManager;
+        private InputManager inputManager;
 
         private void Awake()
         {
             unityLogger = new UnityLogger();
             gameManager = new Core.GameManager(unityLogger);
             entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
-            presentationInputManager = new PresentationInputManager(gameManager);
+            inputManager = new InputManager(gameManager);
             platformManager = new PlatformManager();
             saveManager = new SaveManager(platformManager);
             recorderManager = new RecorderManager(saveManager, gameManager);
-
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
-            gameManager.Start(new Game.Core.GameModeParameter() { PlayerEntityDefinition = new Guid(presentationRegistry.PlayerDefinition.Id) });
+        }
+
+        public void Play(Guid playerEntityDefinitionId)
+        {
+            gameManager.Start(new Game.Core.GameModeParameter() { PlayerEntityDefinition = playerEntityDefinitionId });
         }
 
         private void Update()
         {
-            presentationInputManager.Update();
+            if (!gameManager.IsStarted)
+                return;
+
+            inputManager.Update();
         }
 
         private void FixedUpdate()
         {
-            presentationInputManager.Flush();
+            if (!gameManager.IsStarted)
+                return;
+
+            inputManager.Flush();
             gameManager.Update();
             entityVisualHandler.Update();
         }
 
         private void OnApplicationQuit()
         {
+            if (!gameManager.IsStarted)
+                return;
+
             gameManager.Finish();
         }
     }

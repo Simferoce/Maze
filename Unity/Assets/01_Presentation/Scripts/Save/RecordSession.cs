@@ -5,14 +5,14 @@ namespace Game.Presentation
 {
     public struct RecordSessionSave
     {
-        public struct InputActionSave
+        public struct CommandSave
         {
-            public InputType InputType { get; set; }
+            public ComandType CommandType { get; set; }
             public long Tick { get; set; }
             public Fixed64 Value { get; set; }
         }
 
         public string GameModeParameter { get; set; }
-        public List<InputActionSave> Inputs { get; set; }
+        public List<CommandSave> Commands { get; set; }
     }
 }

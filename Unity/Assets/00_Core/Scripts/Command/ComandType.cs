@@ -1,6 +1,6 @@
 ﻿namespace Game.Core
 {
-    public enum InputType
+    public enum ComandType
     {
         Undefined,
         HorizontalAxis,

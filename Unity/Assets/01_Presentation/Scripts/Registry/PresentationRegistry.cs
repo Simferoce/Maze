@@ -6,13 +6,12 @@ using UnityEngine;
 
 namespace Game.Core
 {
-    public class PresentationRegistry : MonoBehaviour
+    [CreateAssetMenu(fileName = "PresentationRegistry", menuName = "Definitions/PresentationRegistry")]
+    public class PresentationRegistry : ScriptableObject
     {
         [SerializeField] private List<EntityPresentationDefinition> definitions;
-        [SerializeField] private EntityPresentationDefinition playerDefinition;
 
         public List<EntityPresentationDefinition> Definitions { get => definitions; set => definitions = value; }
-        public EntityPresentationDefinition PlayerDefinition { get => playerDefinition; set => playerDefinition = value; }
 
         public T Get<T>(Guid id)
             where T : PresentationDefinition

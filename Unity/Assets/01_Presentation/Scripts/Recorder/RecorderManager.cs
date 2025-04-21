@@ -22,20 +22,20 @@ namespace Game.Presentation
         private void OnGameStarted(Core.GameModeParameter gameModeParameter)
         {
             currentSession = new RecordSession(gameModeParameter);
-            gameManager.InputManager.OnInputAction += OnInputAction;
+            gameManager.CommandManager.OnCommandReceived += OnCommandReceived;
         }
 
-        private void OnInputAction(InputAction inputAction)
+        private void OnCommandReceived(Command command)
         {
-            currentSession.Register(inputAction);
+            currentSession.Register(command);
         }
 
         private void OnGameFinished()
         {
-            gameManager.InputManager.OnInputAction -= OnInputAction;
+            gameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
             RecordSessionSave recordSessionSave = new RecordSessionSave();
             recordSessionSave.GameModeParameter = JsonConvert.SerializeObject(currentSession.GameModeParameter);
-            recordSessionSave.Inputs = currentSession.InputActions.Select(x => new RecordSessionSave.InputActionSave() { InputType = x.InputType, Tick = x.Tick, Value = x.Value }).ToList();
+            recordSessionSave.Commands = currentSession.Commands.Select(x => new RecordSessionSave.CommandSave() { CommandType = x.CommandType, Tick = x.Tick, Value = x.Value }).ToList();
             saveManager.Sessions.Add(recordSessionSave, $"{DateTime.Now.Ticks}");
             saveManager.Sessions.Flush();
         }

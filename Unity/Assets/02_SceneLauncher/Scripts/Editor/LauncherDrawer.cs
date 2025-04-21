@@ -26,7 +26,7 @@ namespace Game.SceneLauncher
             return typeof(T);
         }
 
-        private ObjectField CreatePreferenceObjectField<U>(string label, string key)
+        protected ObjectField CreatePreferenceObjectField<U>(string label, string key)
                 where U : UnityEngine.Object
         {
             ObjectField objectField = new ObjectField(label);

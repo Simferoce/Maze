@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 
 namespace Game.SceneLauncher
 {
@@ -27,10 +26,6 @@ namespace Game.SceneLauncher
 
             HasBeenInitialized = true;
 
-            string[] guids = AssetDatabase.FindAssets("t:scene 00-Empty");
-            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-
-            EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(assetPath);
             EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
 
             Type launcherType = EditorPrefs.HasKey("SceneLancher_LauncherType") ? Type.GetType(EditorPrefs.GetString("SceneLancher_LauncherType")) : typeof(NoneLauncher);
@@ -39,7 +34,6 @@ namespace Game.SceneLauncher
 
             ChangeLauncher(launcherType);
         }
-
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
         {
@@ -58,7 +52,8 @@ namespace Game.SceneLauncher
             CurrentLauncher.OnModified += CurrentLauncher_OnModified;
 
             CurrentLauncher.Load();
-            EditorPrefs.SetString("SceneLancher_LauncherType", type.FullName);
+            CurrentLauncher.Initialize();
+            EditorPrefs.SetString("SceneLancher_LauncherType", type.AssemblyQualifiedName);
             OnModified?.Invoke();
         }
 

@@ -26,6 +26,8 @@ namespace Game.Presentation
             platformManager = new PlatformManager();
             saveManager = new SaveManager(platformManager);
             recorderManager = new RecorderManager(saveManager, gameManager);
+
+            saveManager.Load();
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
         }
 
@@ -49,7 +51,7 @@ namespace Game.Presentation
 
             inputManager.Flush();
             gameManager.Update();
-            entityVisualHandler.Update();
+            entityVisualHandler.Synchronize();
         }
 
         private void OnApplicationQuit()

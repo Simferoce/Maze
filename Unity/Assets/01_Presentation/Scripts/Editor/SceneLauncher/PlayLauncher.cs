@@ -10,11 +10,6 @@ namespace Game.Presentation
     {
         public const string PLAYER_ENTITY_DEFINITION_KEY = "SceneLauncher_PlayerEntityDefinition";
 
-        public PlayLauncher()
-        {
-            fields.Add(PLAYER_ENTITY_DEFINITION_KEY, null);
-        }
-
         public override string GetDescription()
         {
             return "Play";
@@ -33,12 +28,12 @@ namespace Game.Presentation
         public override void Launch()
         {
             PlayManager playManager = GameObject.FindFirstObjectByType<PlayManager>();
-            playManager.Play(new Guid(Get<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY).Id));
+            playManager.Play(new Guid(GetObject<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY).Id));
         }
 
         public override void Load()
         {
-            fields[PLAYER_ENTITY_DEFINITION_KEY] = Load<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY);
+            SetObject<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY, LoadObject<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY));
         }
     }
 }

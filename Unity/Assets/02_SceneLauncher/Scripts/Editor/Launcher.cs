@@ -8,7 +8,7 @@ namespace Game.SceneLauncher
     {
         public event Action OnModified;
 
-        protected Dictionary<string, object> fields = new Dictionary<string, object>();
+        private Dictionary<string, object> fields = new Dictionary<string, object>();
 
         public virtual void Initialize()
         {
@@ -17,7 +17,7 @@ namespace Game.SceneLauncher
         public abstract void Launch();
         public abstract void Load();
 
-        protected T Load<T>(string key)
+        protected T LoadObject<T>(string key)
             where T : UnityEngine.Object
         {
             if (EditorPrefs.HasKey(key))
@@ -31,7 +31,15 @@ namespace Game.SceneLauncher
             return null;
         }
 
-        public virtual void Set<T>(string key, T data)
+        protected string LoadString(string key)
+        {
+            if (EditorPrefs.HasKey(key))
+                return EditorPrefs.GetString(key);
+
+            return string.Empty;
+        }
+
+        public virtual void SetObject<T>(string key, T data)
             where T : UnityEngine.Object
         {
             EditorPrefs.SetString(key, data != null ? AssetDatabase.GetAssetPath(data) : string.Empty);
@@ -39,9 +47,27 @@ namespace Game.SceneLauncher
             OnModified?.Invoke();
         }
 
-        public T Get<T>(string key)
+        public virtual void SetString(string key, string value)
         {
+            EditorPrefs.SetString(key, value);
+            fields[key] = value;
+            OnModified?.Invoke();
+        }
+
+        public T GetObject<T>(string key)
+        {
+            if (!fields.ContainsKey(key))
+                return default;
+
             return (T)fields[key];
+        }
+
+        public string GetString(string key)
+        {
+            if (!fields.ContainsKey(key))
+                return string.Empty;
+
+            return (string)fields[key];
         }
 
         public abstract string GetDescription();

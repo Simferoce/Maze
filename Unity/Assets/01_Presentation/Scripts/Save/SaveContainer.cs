@@ -5,33 +5,34 @@ namespace Game.Presentation
 {
     public class SaveContainer<T>
     {
+        public bool IsLoaded { get; private set; }
+        public bool IsDirty { get; private set; } = false;
+
         private PlatformManager platformManager;
         private string location;
-        private bool isDirty = false;
         private T data;
 
         public SaveContainer(PlatformManager platformManager, string location)
         {
             this.platformManager = platformManager;
             this.location = location;
-            this.location += ".json";
         }
 
         public void Flush()
         {
-            if (!isDirty)
+            if (!IsDirty)
                 return;
 
             string json = JsonConvert.SerializeObject(this.data, Formatting.Indented);
             byte[] bytes = Encoding.UTF8.GetBytes(json);
             platformManager.Save(location, bytes);
-            isDirty = false;
+            IsDirty = false;
         }
 
         public void Save(T data)
         {
             this.data = data;
-            isDirty = true;
+            IsDirty = true;
         }
 
         public void Load()
@@ -42,6 +43,7 @@ namespace Game.Presentation
             byte[] bytes = platformManager.Load(location);
             string json = Encoding.UTF8.GetString(bytes);
             data = JsonConvert.DeserializeObject<T>(json);
+            IsLoaded = true;
         }
 
         public T GetData()

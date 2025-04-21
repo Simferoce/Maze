@@ -34,7 +34,7 @@ namespace Game.Presentation
             }
         }
 
-        public void Update()
+        public void Synchronize()
         {
             List<Core.Entity> gameEntities = gameManager.WorldManager.GetAllEntities().ToList();
             foreach (Game.Core.Entity entity in gameEntities)

@@ -30,13 +30,13 @@ namespace Game.SceneLauncher
 
             label = new Label(Bootstrap.CurrentLauncher.GetDescription());
             label.style.unityTextAlign = TextAnchor.MiddleLeft;
-            label.style.width = 100;
+            label.style.width = Length.Auto();
+            label.style.paddingRight = 8;
 
             Image button = new Image();
             button.image = EditorGUIUtility.IconContent("d_ScaleTool On").image;
             button.style.width = 16;
             button.style.height = 16;
-            button.style.marginLeft = 8;
             button.style.borderBottomRightRadius = new StyleLength(7);
             button.style.borderBottomLeftRadius = new StyleLength(7);
             button.style.borderTopLeftRadius = new StyleLength(7);

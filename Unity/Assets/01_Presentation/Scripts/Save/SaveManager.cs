@@ -4,6 +4,7 @@ namespace Game.Presentation
 {
     public class SaveManager
     {
+        public static string SESSION_PATH => $"{Application.persistentDataPath}/Sessions";
         public SaveCollection<RecordSessionSave> Sessions { get; private set; }
 
         private PlatformManager platformManager;
@@ -11,7 +12,7 @@ namespace Game.Presentation
         public SaveManager(PlatformManager platformManager)
         {
             this.platformManager = platformManager;
-            Sessions = new SaveCollection<RecordSessionSave>(platformManager, $"{Application.persistentDataPath}/Sessions");
+            Sessions = new SaveCollection<RecordSessionSave>(platformManager, SESSION_PATH);
         }
 
         public void Load()

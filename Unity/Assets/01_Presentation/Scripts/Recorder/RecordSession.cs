@@ -6,7 +6,7 @@ namespace Game.Core
     public class RecordSession
     {
         public GameModeParameter GameModeParameter { get; private set; }
-        public List<Command> Commands { get; private set; } = new List<Command>();
+        public List<Command> Commands { get; set; } = new List<Command>();
 
         public RecordSession(GameModeParameter gameModeParameter)
         {

@@ -11,7 +11,7 @@ namespace Game.Presentation
         private GameManager gameManager;
         private EntityVisualHandler entityVisualHandler;
         private PlatformManager platformManager;
-        private RecordSessionRepository recordSessionRepository;
+        private IRecordSessionRepository recordSessionRepository;
         private UnityLogger logger;
         private int commandIndex = 0;
         private RecordSessionHeader currentSessionHeader;
@@ -28,10 +28,10 @@ namespace Game.Presentation
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
         }
 
-        public void Play(string recordSessionName)
+        public async void Play(long id)
         {
-            currentSessionHeader = recordSessionRepository.GetRecordSessionHeader(recordSessionName);
-            currentSessionBody = recordSessionRepository.GetRecordSessionBody(recordSessionName);
+            currentSessionHeader = await recordSessionRepository.GetRecordSessionHeaderAsync(id);
+            currentSessionBody = await recordSessionRepository.GetRecordSessionBodyAsync(id);
             gameManager.Start(currentSessionHeader.GameModeParameter);
         }
 

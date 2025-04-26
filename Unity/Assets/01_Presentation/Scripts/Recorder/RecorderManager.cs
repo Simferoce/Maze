@@ -6,11 +6,11 @@ namespace Game.Presentation
     public class RecorderManager
     {
         private GameManager gameManager;
-        private RecordSessionRepository recordSessionRepository;
+        private IRecordSessionRepository recordSessionRepository;
         private RecordSessionHeader currentSessionHeader;
         private RecordSessionBody currentSessionBody;
 
-        public RecorderManager(RecordSessionRepository recordSessionRepository, GameManager gameManager)
+        public RecorderManager(IRecordSessionRepository recordSessionRepository, GameManager gameManager)
         {
             this.recordSessionRepository = recordSessionRepository;
             this.gameManager = gameManager;
@@ -30,12 +30,12 @@ namespace Game.Presentation
             currentSessionBody.Register(command);
         }
 
-        private void OnGameFinished()
+        private async void OnGameFinished()
         {
             gameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
             currentSessionHeader.Date = DateTime.Now.Ticks;
             currentSessionHeader.Name = currentSessionHeader.Date.ToString();
-            recordSessionRepository.Add(currentSessionHeader, currentSessionBody);
+            await recordSessionRepository.AddRecordSessionHeaderAsync(currentSessionHeader, currentSessionBody);
         }
     }
 }

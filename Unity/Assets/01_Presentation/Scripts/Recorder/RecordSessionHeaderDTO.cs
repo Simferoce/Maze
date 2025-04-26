@@ -5,6 +5,7 @@ namespace Game.Presentation
 {
     public struct RecordSessionHeaderDTO
     {
+        public long Id { get; set; }
         public string Name { get; set; }
         public string GameModeParameter { get; set; }
         public long Date { get; set; }

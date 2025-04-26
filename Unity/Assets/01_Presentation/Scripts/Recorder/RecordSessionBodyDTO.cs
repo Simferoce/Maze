@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Game.Presentation
 {
-    public struct RecordSessionDTO
+    public struct RecordSessionBodyDTO
     {
         public struct CommandDTO
         {
@@ -35,15 +35,15 @@ namespace Game.Presentation
 
         public List<CommandDTO> Commands { get; set; }
 
-        public static RecordSessionDTO Convert(RecordSessionBody recordSession)
+        public static RecordSessionBodyDTO Convert(RecordSessionBody recordSession)
         {
-            return new RecordSessionDTO()
+            return new RecordSessionBodyDTO()
             {
                 Commands = recordSession.Commands.Select(x => CommandDTO.Convert(x)).ToList()
             };
         }
 
-        public static RecordSessionBody Convert(RecordSessionDTO recordSession)
+        public static RecordSessionBody Convert(RecordSessionBodyDTO recordSession)
         {
             return new RecordSessionBody()
             {

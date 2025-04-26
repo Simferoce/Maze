@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Presentation
 {
-    public class RecordSessionRepository
+    public class RecordSessionRepository : IRecordSessionRepository
     {
         public static string SESSION_PATH => $"{Application.persistentDataPath}/Sessions";
         public static string HEADER_FILE => "header.json";
@@ -19,7 +19,7 @@ namespace Game.Presentation
             this.platformManager = platformManager;
         }
 
-        public void Add(RecordSessionHeader recordSessionHeader, RecordSessionBody recordSession)
+        public async Awaitable AddRecordSessionHeaderAsync(RecordSessionHeader recordSessionHeader, RecordSessionBody recordSessionBody)
         {
             if (!platformManager.DirectoryExists(SESSION_PATH))
                 platformManager.CreateDirectory(SESSION_PATH);
@@ -36,13 +36,13 @@ namespace Game.Presentation
             byte[] headerData = Encoding.UTF8.GetBytes(headerJson);
             platformManager.Save(headerPath, headerData);
 
-            RecordSessionDTO recordSessionDTO = RecordSessionDTO.Convert(recordSession);
+            RecordSessionBodyDTO recordSessionDTO = RecordSessionBodyDTO.Convert(recordSessionBody);
             string bodyJson = JsonConvert.SerializeObject(recordSessionDTO);
             byte[] bodyData = Encoding.UTF8.GetBytes(bodyJson);
             platformManager.Save(bodyPath, bodyData);
         }
 
-        public List<RecordSessionHeader> GetAllHeader()
+        public async Awaitable<List<RecordSessionHeader>> GetRecordSessionHeadersAsync()
         {
             List<RecordSessionHeader> results = new List<RecordSessionHeader>();
 
@@ -68,42 +68,42 @@ namespace Game.Presentation
             return results;
         }
 
-        public RecordSessionBody GetRecordSessionBody(string name)
+        public async Awaitable<RecordSessionBody> GetRecordSessionBodyAsync(long id)
         {
-            string folderPath = Path.Combine(SESSION_PATH, name);
+            string folderPath = Path.Combine(SESSION_PATH, id.ToString());
             if (!platformManager.DirectoryExists(folderPath))
             {
-                Debug.LogError($"Could not find the directory of the given header \"{name}\"");
+                Debug.LogError($"Could not find the directory of the given header \"{id}\"");
                 return null;
             }
 
             string bodyPath = Path.Combine(folderPath, BODDY_FILE);
             if (!platformManager.FileExists(bodyPath))
             {
-                Debug.LogError($"Could not find the body of the given header \"{name}\"");
+                Debug.LogError($"Could not find the body of the given header \"{id}\"");
                 return null;
             }
 
             byte[] bodyData = platformManager.Load(bodyPath);
             string json = Encoding.UTF8.GetString(bodyData);
-            RecordSessionDTO recordSessionDTO = JsonConvert.DeserializeObject<RecordSessionDTO>(json);
-            RecordSessionBody recordSessionBody = RecordSessionDTO.Convert(recordSessionDTO);
+            RecordSessionBodyDTO recordSessionDTO = JsonConvert.DeserializeObject<RecordSessionBodyDTO>(json);
+            RecordSessionBody recordSessionBody = RecordSessionBodyDTO.Convert(recordSessionDTO);
             return recordSessionBody;
         }
 
-        public RecordSessionHeader GetRecordSessionHeader(string name)
+        public async Awaitable<RecordSessionHeader> GetRecordSessionHeaderAsync(long id)
         {
-            string folderPath = Path.Combine(SESSION_PATH, name);
+            string folderPath = Path.Combine(SESSION_PATH, id.ToString());
             if (!platformManager.DirectoryExists(folderPath))
             {
-                Debug.LogError($"Could not find the directory of the given header \"{name}\"");
+                Debug.LogError($"Could not find the directory of the given header \"{id}\"");
                 return null;
             }
 
             string headerPath = Path.Combine(folderPath, HEADER_FILE);
             if (!platformManager.FileExists(headerPath))
             {
-                Debug.LogError($"Could not find the header of the given header \"{name}\"");
+                Debug.LogError($"Could not find the header of the given header \"{id}\"");
                 return null;
             }
 

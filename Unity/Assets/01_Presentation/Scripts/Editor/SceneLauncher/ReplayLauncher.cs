@@ -28,7 +28,7 @@ namespace Game.Presentation
         public override void Launch()
         {
             ReplayManager replayManager = GameObject.FindFirstObjectByType<ReplayManager>();
-            replayManager.Play(GetString(SESSION_NAME_KEY));
+            replayManager.Play(long.Parse(GetString(SESSION_NAME_KEY)));
         }
 
         public override void Load()

@@ -14,7 +14,7 @@ namespace Game.Presentation
         private GameManager gameManager;
         private RecorderManager recorderManager;
         private PlatformManager platformManager;
-        private SaveManager saveManager;
+        private RecordSessionRepository recordSessionRepository;
         private InputManager inputManager;
 
         private void Awake()
@@ -24,10 +24,9 @@ namespace Game.Presentation
             entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
             inputManager = new InputManager(gameManager);
             platformManager = new PlatformManager();
-            saveManager = new SaveManager(platformManager);
-            recorderManager = new RecorderManager(saveManager, gameManager);
+            recordSessionRepository = new RecordSessionRepository(platformManager);
+            recorderManager = new RecorderManager(recordSessionRepository, gameManager);
 
-            saveManager.Load();
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
         }
 

@@ -27,7 +27,7 @@ namespace Game.Presentation
 
         public override void Initialize(VisualElement root)
         {
-            List<SessionChoice> sessionChoices = Directory.EnumerateFiles(SaveManager.SESSION_PATH)
+            List<SessionChoice> sessionChoices = Directory.EnumerateDirectories(RecordSessionRepository.SESSION_PATH)
                 .Select(x => new SessionChoice(Path.GetFileNameWithoutExtension(x), Path.GetFileNameWithoutExtension(x)))
                 .Prepend(new SessionChoice("", "None")).ToList();
 

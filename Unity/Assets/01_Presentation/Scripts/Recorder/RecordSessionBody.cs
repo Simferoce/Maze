@@ -1,17 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Game.Core;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Game.Core
+namespace Game.Presentation
 {
-    public class RecordSession
+    public class RecordSessionBody
     {
-        public GameModeParameter GameModeParameter { get; private set; }
         public List<Command> Commands { get; set; } = new List<Command>();
-
-        public RecordSession(GameModeParameter gameModeParameter)
-        {
-            GameModeParameter = gameModeParameter;
-        }
 
         public void Register(Command command)
         {

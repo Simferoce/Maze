@@ -1,5 +1,4 @@
 ﻿using Game.Core;
-using Newtonsoft.Json;
 using System.Linq;
 using UnityEngine;
 
@@ -12,31 +11,28 @@ namespace Game.Presentation
         private GameManager gameManager;
         private EntityVisualHandler entityVisualHandler;
         private PlatformManager platformManager;
-        private SaveManager saveManager;
+        private RecordSessionRepository recordSessionRepository;
         private UnityLogger logger;
         private int commandIndex = 0;
-        private RecordSession currentSession;
+        private RecordSessionHeader currentSessionHeader;
+        private RecordSessionBody currentSessionBody;
 
         public void Awake()
         {
             logger = new UnityLogger();
             gameManager = new GameManager(logger);
             platformManager = new PlatformManager();
-            saveManager = new SaveManager(platformManager);
+            recordSessionRepository = new RecordSessionRepository(platformManager);
             entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
 
-            saveManager.Load();
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
         }
 
         public void Play(string recordSessionName)
         {
-            RecordSessionSave recordSessionSave = saveManager.Sessions.GetEntry(recordSessionName);
-            GameModeParameter gameModeParameter = JsonConvert.DeserializeObject<GameModeParameter>(recordSessionSave.GameModeParameter);
-            currentSession = new RecordSession(gameModeParameter);
-            currentSession.Commands = recordSessionSave.Commands.Select(x => new Command() { CommandType = x.CommandType, Tick = x.Tick, Value = x.Value }).ToList();
-
-            gameManager.Start(gameModeParameter);
+            currentSessionHeader = recordSessionRepository.GetRecordSessionHeader(recordSessionName);
+            currentSessionBody = recordSessionRepository.GetRecordSessionBody(recordSessionName);
+            gameManager.Start(currentSessionHeader.GameModeParameter);
         }
 
         public void FixedUpdate()
@@ -44,9 +40,9 @@ namespace Game.Presentation
             if (!gameManager.IsStarted)
                 return;
 
-            while (currentSession.Commands.Count > commandIndex && currentSession.Commands[commandIndex].Tick == gameManager.TimeManager.CurrentTick)
+            while (currentSessionBody.Commands.Count > commandIndex && currentSessionBody.Commands[commandIndex].Tick == gameManager.TimeManager.CurrentTick)
             {
-                gameManager.CommandManager.Execute(currentSession.Commands[commandIndex]);
+                gameManager.CommandManager.Execute(currentSessionBody.Commands[commandIndex]);
 
                 commandIndex++;
             }

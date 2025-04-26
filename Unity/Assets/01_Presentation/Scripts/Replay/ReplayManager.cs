@@ -22,7 +22,7 @@ namespace Game.Presentation
             logger = new UnityLogger();
             gameManager = new GameManager(logger);
             platformManager = new PlatformManager();
-            recordSessionRepository = new RecordSessionRepository(platformManager);
+            recordSessionRepository = new RecordSessionRepositoryWeb();
             entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
 
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());

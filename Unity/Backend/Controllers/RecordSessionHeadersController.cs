@@ -44,7 +44,7 @@ namespace Backend.Controllers
             _context.RecordSessionHeaders.Add(recordSessionHeader);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRecordSessionHeader", new { id = recordSessionHeader.Id }, recordSessionHeader);
+            return CreatedAtAction(nameof(GetRecordSessionHeader), new { id = recordSessionHeader.Id }, recordSessionHeader);
         }
 
         // DELETE: api/RecordSessionHeaders/5

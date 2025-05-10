@@ -2,7 +2,8 @@
     "name": "game.presentation",
     "rootNamespace": "",
     "references": [
-        "GUID:3689088c0963bcf428755462c64be719"
+        "GUID:3689088c0963bcf428755462c64be719",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

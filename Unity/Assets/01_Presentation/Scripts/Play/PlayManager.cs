@@ -8,6 +8,7 @@ namespace Game.Presentation
     {
         [SerializeField] private PresentationRegistry presentationRegistry;
         [SerializeField] private PlayCamera playCamera;
+        [SerializeField] private InputManager inputManager;
 
         private UnityLogger unityLogger;
         private EntityVisualHandler entityVisualHandler;
@@ -15,7 +16,6 @@ namespace Game.Presentation
         private RecorderManager recorderManager;
         private PlatformManager platformManager;
         private IRecordSessionRepository recordSessionRepository;
-        private InputManager inputManager;
         private bool synchronize = false;
 
         private void Awake()
@@ -23,13 +23,13 @@ namespace Game.Presentation
             unityLogger = new UnityLogger();
             gameManager = new Core.GameManager(unityLogger);
             entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
-            inputManager = new InputManager(gameManager);
             platformManager = new PlatformManager();
             recordSessionRepository = new RecordSessionRepositoryWeb();
             recorderManager = new RecorderManager(recordSessionRepository, gameManager);
 
             Registry registry = presentationRegistry.GenerateGameRegistry();
             gameManager.Initialize(registry);
+            inputManager.Initialize(gameManager);
         }
 
         public void Play(Guid worldDefinition, Guid playerEntityDefinitionId, Guid playerDefinitionId, int seed, bool record)
@@ -54,8 +54,6 @@ namespace Game.Presentation
 
             if (!gameManager.IsStarted)
                 return;
-
-            inputManager.Update();
         }
 
         private void FixedUpdate()

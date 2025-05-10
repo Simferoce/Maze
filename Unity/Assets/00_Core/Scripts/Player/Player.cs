@@ -40,7 +40,7 @@
         {
             Assertion.IsNotNull(Avatar, "Could not update the player because there is no avatar assigned yet.");
 
-            Vector2 displacement = direction * Avatar.AttributeHandler.Get(AttributeType.MovementSpeed).Value;
+            Vector2 displacement = direction.Normalized * Avatar.AttributeHandler.Get(AttributeType.MovementSpeed).Value;
 
             Avatar.Move(displacement);
         }

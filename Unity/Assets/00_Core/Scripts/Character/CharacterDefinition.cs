@@ -9,5 +9,10 @@ namespace Game.Core
         public CharacterDefinition(Guid id) : base(id)
         {
         }
+
+        public override Entity Instantiate(GameManager gameManager)
+        {
+            return new Character(gameManager, this);
+        }
     }
 }

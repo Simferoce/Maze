@@ -24,6 +24,11 @@ namespace Game.Core
         {
             Transform.Translate(translation);
         }
+
+        public void SetPosition(Vector2 position)
+        {
+            Transform.SetPosition(position);
+        }
     }
 
     public abstract class Entity<T> : Entity

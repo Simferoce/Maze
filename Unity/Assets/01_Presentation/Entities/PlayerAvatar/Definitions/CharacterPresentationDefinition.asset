@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d667c1c6674d3e147b7c6962adbad84d, type: 3}
   m_Name: CharacterPresentationDefinition
   m_EditorClassIdentifier: 
-  id: 09906d2d-2d7d-77e4-2a07-d892521806c9
+  id: 2d6d90097d2de4772a07d892521806c9
   attributeHandler:
     attributes:
     - type: 1

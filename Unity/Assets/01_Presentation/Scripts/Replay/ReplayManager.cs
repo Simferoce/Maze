@@ -1,5 +1,4 @@
 ﻿using Game.Core;
-using System.Linq;
 using UnityEngine;
 
 namespace Game.Presentation
@@ -25,7 +24,8 @@ namespace Game.Presentation
             recordSessionRepository = new RecordSessionRepositoryWeb();
             entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
 
-            gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
+            Registry registry = presentationRegistry.GenerateGameRegistry();
+            gameManager.Initialize(registry);
         }
 
         public async void Play(long id)

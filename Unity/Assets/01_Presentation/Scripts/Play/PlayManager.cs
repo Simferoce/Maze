@@ -1,6 +1,5 @@
 using Game.Core;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Game.Presentation
@@ -16,6 +15,7 @@ namespace Game.Presentation
         private PlatformManager platformManager;
         private IRecordSessionRepository recordSessionRepository;
         private InputManager inputManager;
+        private bool synchronize = false;
 
         private void Awake()
         {
@@ -27,19 +27,26 @@ namespace Game.Presentation
             recordSessionRepository = new RecordSessionRepositoryWeb();
             recorderManager = new RecorderManager(recordSessionRepository, gameManager);
 
-            gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
+            Registry registry = presentationRegistry.GenerateGameRegistry();
+            gameManager.Initialize(registry);
         }
 
-        public void Play(Guid playerEntityDefinitionId, bool record)
+        public void Play(Guid worldDefinition, Guid playerEntityDefinitionId, int seed, bool record)
         {
             if (record)
                 recorderManager.Start();
 
-            gameManager.Start(new Game.Core.GameModeParameter() { PlayerCharacterDefinition = playerEntityDefinitionId });
+            gameManager.Start(new Game.Core.GameModeParameter() { WorldDefinition = worldDefinition, PlayerCharacterDefinition = playerEntityDefinitionId, Seed = seed });
         }
 
         private void Update()
         {
+            if (synchronize)
+            {
+                entityVisualHandler.Synchronize();
+                synchronize = false;
+            }
+
             if (!gameManager.IsStarted)
                 return;
 
@@ -53,7 +60,7 @@ namespace Game.Presentation
 
             inputManager.Flush();
             gameManager.Update();
-            entityVisualHandler.Synchronize();
+            synchronize = true;
         }
 
         private void OnApplicationQuit()

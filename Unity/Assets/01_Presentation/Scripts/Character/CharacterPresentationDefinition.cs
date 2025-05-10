@@ -1,5 +1,4 @@
 ﻿using Game.Core;
-using System;
 using UnityEngine;
 
 namespace Game.Presentation
@@ -12,22 +11,27 @@ namespace Game.Presentation
 
         public CharacterVisual Prefab { get => prefab; set => prefab = value; }
 
-        public override Definition Convert()
+        public override Definition Create()
         {
-            CharacterDefinition entityDefinition = new Game.Core.CharacterDefinition(new Guid(this.Id));
-            entityDefinition.AttributeHandler = attributeHandler.Convert();
+            CharacterDefinition entityDefinition = new Game.Core.CharacterDefinition(this.Id);
             return entityDefinition;
+        }
+
+        public override bool HasIndependentVisual()
+        {
+            return true;
+        }
+
+        public override void Initialize(Registry registry, Definition definition)
+        {
+            CharacterDefinition characterDefinition = definition as CharacterDefinition;
+            characterDefinition.AttributeHandler = attributeHandler.Convert();
         }
 
         public override EntityVisual InstantiateVisual(Entity entity)
         {
             CharacterVisual characterVisual = GameObject.Instantiate(prefab);
             return characterVisual;
-        }
-
-        public override bool PresentationOf(Entity entity)
-        {
-            return entity is Character;
         }
     }
 }

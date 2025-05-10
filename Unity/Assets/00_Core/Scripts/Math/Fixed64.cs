@@ -28,6 +28,8 @@ namespace Game.Core
         public float ToFloat() => (float)rawValue / ONE;
         public double ToDouble() => (double)rawValue / ONE;
 
+        public static implicit operator int(Fixed64 d) => d.ToInt();
+
         public static Fixed64 operator +(Fixed64 a, Fixed64 b) => new Fixed64(a.rawValue + b.rawValue);
         public static Fixed64 operator -(Fixed64 a, Fixed64 b) => new Fixed64(a.rawValue - b.rawValue);
         public static Fixed64 operator -(Fixed64 a) => new Fixed64(-a.rawValue);

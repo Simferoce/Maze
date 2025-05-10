@@ -7,5 +7,7 @@ namespace Game.Core
         public EntityDefinition(Guid id) : base(id)
         {
         }
+
+        public abstract Entity Instantiate(GameManager gameManager);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Game.Core
 {
-    public class DepthFirstLayout : ILayout
+    public class DepthFirstLayout
     {
         [Flags]
         private enum Direction
@@ -15,14 +15,14 @@ namespace Game.Core
             Down = 8,
         }
 
-        public bool[,] Generate(int seed, int width, int height)
+        public bool[,] Generate(int seed, int width, int height, Vector2 spawnPoint)
         {
             System.Random random = new System.Random(seed);
 
             bool[,] layout = new bool[width, height];
             bool[,] visited = new bool[width, height];
             Stack<(Position position, Direction direction)> opens = new Stack<(Position position, Direction)>();
-            (Position position, Direction direction) first = (new Position(width / 2, 2), Direction.Up);
+            (Position position, Direction direction) first = (new Position(spawnPoint.x, spawnPoint.y), Direction.Up);
             opens.Push(first);
 
             layout[first.position.x, first.position.y] = false;
@@ -35,8 +35,10 @@ namespace Game.Core
                 visited[current.position.x, current.position.y] = true;
                 Position from = From(current.position, current.direction);
                 Position inbetween = Inbetween(current.position, current.direction);
-                layout[from.x, from.y] = true;
-                layout[inbetween.x, inbetween.y] = true;
+                if (from.x < layout.GetLength(0) && from.x >= 0 && from.y < layout.GetLength(1) && from.y >= 0)
+                    layout[from.x, from.y] = true;
+                if (inbetween.x < layout.GetLength(0) && inbetween.x >= 0 && inbetween.y < layout.GetLength(1) && inbetween.y >= 0)
+                    layout[inbetween.x, inbetween.y] = true;
 
                 Span<(Direction direction, int value)> priority = stackalloc (Direction, int)[4];
                 priority[0] = (Direction.Left, random.Next());

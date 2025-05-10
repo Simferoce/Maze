@@ -1,7 +1,6 @@
 ﻿using Game.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Game.Presentation
@@ -10,7 +9,7 @@ namespace Game.Presentation
     {
         private GameManager gameManager;
         private PresentationRegistry presentationRegistry;
-        private List<EntityVisual> entities = new List<EntityVisual>();
+        private Dictionary<Guid, EntityVisual> entities = new Dictionary<Guid, EntityVisual>();
 
         public EntityVisualHandler(PresentationRegistry presentationRegistry, GameManager gameManager)
         {
@@ -26,44 +25,43 @@ namespace Game.Presentation
 
         public void Dispose()
         {
-            for (int i = entities.Count - 1; i >= 0; i--)
-            {
-                EntityVisual entityVisual = entities[i];
-                GameObject.Destroy(entityVisual.gameObject);
-                entities.RemoveAt(i);
-            }
+            foreach (var entity in entities.Values)
+                GameObject.Destroy(entity.gameObject);
+
+            entities.Clear();
         }
 
         public void Synchronize()
         {
-            List<Core.Entity> gameEntities = gameManager.WorldManager.GetAllEntities().ToList();
+            IEnumerable<Core.Entity> gameEntities = gameManager.WorldManager.GetAllEntities();
             foreach (Game.Core.Entity entity in gameEntities)
             {
-                EntityVisual entityVisual = entities.FirstOrDefault(x => x.EntityId == entity.Id);
-                if (entityVisual == null)
+                if (entities.ContainsKey(entity.Id))
+                    continue;
+
+                EntityPresentationDefinition entityPresentationDefinition = presentationRegistry.Get<EntityPresentationDefinition>(entity.Definition.Id);
+                if (entityPresentationDefinition == null)
                 {
-                    EntityPresentationDefinition entityPresentationDefinition = presentationRegistry.Get<EntityPresentationDefinition>(entity.Definition.Id);
-                    if (entityPresentationDefinition == null)
-                    {
-                        Debug.LogError($"Could not find a representation visual of the definition of entity with id \"{entity.Definition.Id}\" of type \"{entity.GetType().Name}\"");
-                        continue;
-                    }
-
-                    entityVisual = entityPresentationDefinition.InstantiateVisual(entity);
-                    entityVisual.Initialize(gameManager, entity.Id);
-
-                    entities.Add(entityVisual);
+                    Debug.LogError($"Could not find a representation visual of the definition of entity with id \"{entity.Definition.Id}\" of type \"{entity.GetType().Name}\"");
+                    continue;
                 }
+
+                if (!entityPresentationDefinition.HasIndependentVisual())
+                    continue;
+
+                EntityVisual entityVisual = entityPresentationDefinition.InstantiateVisual(entity);
+                entityVisual.Initialize(gameManager, presentationRegistry, entity.Id);
+
+                entities.Add(entity.Id, entityVisual);
             }
 
-            for (int i = entities.Count - 1; i >= 0; i--)
+            foreach (KeyValuePair<Guid, EntityVisual> visualEntity in entities)
             {
-                EntityVisual entityVisual = entities[i];
-                Core.Entity entity = gameEntities.FirstOrDefault(x => x.Id == entityVisual.EntityId);
+                Entity entity = gameManager.WorldManager.GetEntityById(visualEntity.Value.EntityId);
                 if (entity == null)
                 {
-                    GameObject.Destroy(entityVisual.gameObject);
-                    entities.RemoveAt(i);
+                    GameObject.Destroy(visualEntity.Value);
+                    entities.Remove(visualEntity.Key);
                 }
             }
         }

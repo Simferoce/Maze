@@ -45,6 +45,23 @@ namespace Game.SceneLauncher
             return toggle;
         }
 
+        protected IntegerField CreateIntegerPreferenceField(string label, string key)
+        {
+            IntegerField integerField = new IntegerField();
+            integerField.label = label;
+            integerField.AddToClassList(Toggle.alignedFieldUssClassName);
+
+            integerField.value = launcher.GetInt(key);
+            integerField.RegisterValueChangedCallback(OnFieldUpdated);
+
+            void OnFieldUpdated(ChangeEvent<int> evt)
+            {
+                launcher.SetInt(key, evt.newValue);
+            }
+
+            return integerField;
+        }
+
         protected ObjectField CreatePreferenceObjectField<U>(string label, string key)
                 where U : UnityEngine.Object
         {

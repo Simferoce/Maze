@@ -38,8 +38,11 @@
         public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.x - b.x, a.y - b.y);
         public static Vector2 operator -(Vector2 v) => new Vector2(-v.x, -v.y);
         public static Vector2 operator *(Vector2 v, Fixed64 scalar) => new Vector2(v.x * scalar, v.y * scalar);
+        public static Vector2 operator *(Vector2 v, int scalar) => new Vector2(v.x * scalar, v.y * scalar);
         public static Vector2 operator *(Fixed64 scalar, Vector2 v) => new Vector2(v.x * scalar, v.y * scalar);
+        public static Vector2 operator *(int scalar, Vector2 v) => new Vector2(v.x * scalar, v.y * scalar);
         public static Vector2 operator /(Vector2 v, Fixed64 scalar) => new Vector2(v.x / scalar, v.y / scalar);
+        public static Vector2 operator /(Vector2 v, int scalar) => new Vector2(v.x / scalar, v.y / scalar);
 
         public static bool operator ==(Vector2 a, Vector2 b) => a.x == b.x && a.y == b.y;
         public static bool operator !=(Vector2 a, Vector2 b) => !(a == b);

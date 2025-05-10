@@ -2,7 +2,7 @@ using System;
 
 namespace Game.Core
 {
-    public abstract class Entity
+    public abstract class Entity : IDisposable
     {
         public Guid Id { get; private set; }
         public GameManager GameManager { get; private set; }
@@ -18,6 +18,10 @@ namespace Game.Core
             Id = Guid.NewGuid();
 
             gameManager.WorldManager.Register(this);
+        }
+
+        public virtual void Dispose()
+        {
         }
 
         public void Move(Vector2 translation)

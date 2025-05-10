@@ -8,6 +8,7 @@ namespace Game.Presentation
     public class PlayLauncherDrawer : LauncherDrawer<PlayLauncher>
     {
         private ObjectField playerCharacterDefinitionUIElement;
+        private ObjectField playerDefinitionUIElement;
         private ObjectField worldDefinitionUIElement;
         private Toggle recordUIElement;
         private IntegerField seedUIElement;
@@ -21,7 +22,10 @@ namespace Game.Presentation
             worldDefinitionUIElement = CreatePreferenceObjectField<WorldPresentationDefinition>("WorldManager Definition", PlayLauncher.WORLD_DEFINITION_KEY);
             root.Add(worldDefinitionUIElement);
 
-            playerCharacterDefinitionUIElement = CreatePreferenceObjectField<CharacterPresentationDefinition>("Player Definition", PlayLauncher.PLAYER_CHARACTER_DEFINITION_KEY);
+            playerDefinitionUIElement = CreatePreferenceObjectField<PlayerPresentationDefinition>("Player Definition", PlayLauncher.PLAYER_DEFINITION_KEY);
+            root.Add(playerDefinitionUIElement);
+
+            playerCharacterDefinitionUIElement = CreatePreferenceObjectField<CharacterPresentationDefinition>("Character Definition", PlayLauncher.PLAYER_CHARACTER_DEFINITION_KEY);
             root.Add(playerCharacterDefinitionUIElement);
 
             seedUIElement = CreateIntegerPreferenceField("Seed", PlayLauncher.SEED_KEY);

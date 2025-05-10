@@ -7,6 +7,7 @@
         public event OnGameStartedDelegate OnGameStarted;
         public event OnGameFinishedDelegate OnGameFinished;
 
+        public UpdateManager UpdateManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public TimeManager TimeManager { get; private set; }
         public ILogger Logger { get; private set; }
@@ -19,6 +20,7 @@
         {
             Logger = logger;
 
+            UpdateManager = new UpdateManager(this);
             WorldManager = new WorldManager(this);
             CommandManager = new CommandManager(this);
             TimeManager = new TimeManager(this);
@@ -41,14 +43,18 @@
             World world = worldDefinition.Instantiate(this) as World;
             world.Generate(gameModeParameter.Seed);
 
+            PlayerDefinition playerDefinition = Registry.Get<PlayerDefinition>(gameModeParameter.PlayerDefinition);
+            Assertion.IsNotNull(playerDefinition, $"Could not find the {nameof(PlayerDefinition)} with the id \"{gameModeParameter.PlayerDefinition}\".");
+
+            Player player = playerDefinition.Instantiate(this) as Player;
+
             CharacterDefinition characterDefinition = Registry.Get<CharacterDefinition>(gameModeParameter.PlayerCharacterDefinition);
             Assertion.IsNotNull(worldDefinition, $"Could not find the {nameof(CharacterDefinition)} with the id \"{gameModeParameter.PlayerCharacterDefinition}\".");
 
             Character playerAvatar = characterDefinition.Instantiate(this) as Character;
-            Player player = new Player(this);
-            player.Assign(playerAvatar);
             playerAvatar.SetPosition(world.SpawnPoint);
 
+            player.Assign(playerAvatar);
             OnGameStarted?.Invoke(gameModeParameter);
         }
 
@@ -63,7 +69,7 @@
             Assertion.IsTrue(IsStarted, "The game has not been started yet.");
 
             TimeManager.Update();
-            WorldManager.Update();
+            UpdateManager.Update();
         }
     }
 }

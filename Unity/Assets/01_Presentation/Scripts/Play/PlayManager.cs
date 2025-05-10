@@ -7,6 +7,7 @@ namespace Game.Presentation
     public class PlayManager : MonoBehaviour
     {
         [SerializeField] private PresentationRegistry presentationRegistry;
+        [SerializeField] private PlayCamera playCamera;
 
         private UnityLogger unityLogger;
         private EntityVisualHandler entityVisualHandler;
@@ -31,12 +32,14 @@ namespace Game.Presentation
             gameManager.Initialize(registry);
         }
 
-        public void Play(Guid worldDefinition, Guid playerEntityDefinitionId, int seed, bool record)
+        public void Play(Guid worldDefinition, Guid playerEntityDefinitionId, Guid playerDefinitionId, int seed, bool record)
         {
             if (record)
                 recorderManager.Start();
 
-            gameManager.Start(new Game.Core.GameModeParameter() { WorldDefinition = worldDefinition, PlayerCharacterDefinition = playerEntityDefinitionId, Seed = seed });
+            gameManager.Start(new Game.Core.GameModeParameter() { WorldDefinition = worldDefinition, PlayerCharacterDefinition = playerEntityDefinitionId, PlayerDefinition = playerDefinitionId, Seed = seed });
+            entityVisualHandler.Refresh(gameManager);
+            playCamera.Refresh(gameManager, entityVisualHandler);
         }
 
         private void Update()
@@ -44,6 +47,8 @@ namespace Game.Presentation
             if (synchronize)
             {
                 entityVisualHandler.Synchronize();
+                playCamera.Synchronize();
+
                 synchronize = false;
             }
 

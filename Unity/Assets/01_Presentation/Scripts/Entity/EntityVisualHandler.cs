@@ -31,9 +31,20 @@ namespace Game.Presentation
             entities.Clear();
         }
 
+        public bool TryGet<T>(Guid id, out T visual)
+            where T : EntityVisual
+        {
+            visual = null;
+            if (!entities.ContainsKey(id))
+                return false;
+
+            visual = (T)entities[id];
+            return visual != null;
+        }
+
         public void Synchronize()
         {
-            IEnumerable<Core.Entity> gameEntities = gameManager.WorldManager.GetAllEntities();
+            IEnumerable<Core.Entity> gameEntities = gameManager.WorldManager.GetEntites<Entity>();
             foreach (Game.Core.Entity entity in gameEntities)
             {
                 if (entities.ContainsKey(entity.Id))

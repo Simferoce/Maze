@@ -16,5 +16,5 @@ MonoBehaviour:
   attributeHandler:
     attributes:
     - type: 1
-      value: 32768
+      value: 1638400
   prefab: {fileID: 8642323728296923524, guid: 2dcf29f36a06d7048b70263328dcd0c8, type: 3}

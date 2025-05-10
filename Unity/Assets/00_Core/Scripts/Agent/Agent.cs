@@ -1,22 +1,12 @@
-﻿using System;
-
-namespace Game.Core
+﻿namespace Game.Core
 {
-    public abstract class Agent : IDisposable
+    public abstract class Agent : Entity<AgentDefinition>
     {
-        protected GameManager gameManager;
-
-        public Agent(GameManager gameManager)
+        public Agent(GameManager gameManager, AgentDefinition definition) : base(gameManager, definition)
         {
-            this.gameManager = gameManager;
-
-            gameManager.WorldManager.Register(this);
+            gameManager.UpdateManager.Register(Update);
         }
 
         public abstract void Update();
-
-        public virtual void Dispose()
-        {
-        }
     }
 }

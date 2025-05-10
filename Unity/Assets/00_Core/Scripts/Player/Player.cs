@@ -3,18 +3,20 @@
     public class Player : Agent
     {
         public Character Avatar { get; private set; }
+        public new PlayerDefinition Definition { get; private set; }
 
         private Vector2 direction = Vector2.Zero;
 
-        public Player(GameManager gameManager) : base(gameManager)
+        public Player(GameManager gameManager, PlayerDefinition definition) : base(gameManager, definition)
         {
-            gameManager.CommandManager.OnCommandReceived += OnCommandReceived;
+            Definition = definition;
+            GameManager.CommandManager.OnCommandReceived += OnCommandReceived;
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            gameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
+            GameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
         }
 
         public void Assign(Character playerEntity)

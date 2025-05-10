@@ -30,9 +30,12 @@ namespace Game.Presentation
             gameManager.Initialize(presentationRegistry.Definitions.Select(x => x.Convert()).ToList());
         }
 
-        public void Play(Guid playerEntityDefinitionId)
+        public void Play(Guid playerEntityDefinitionId, bool record)
         {
-            gameManager.Start(new Game.Core.GameModeParameter() { PlayerEntityDefinition = playerEntityDefinitionId });
+            if (record)
+                recorderManager.Start();
+
+            gameManager.Start(new Game.Core.GameModeParameter() { PlayerCharacterDefinition = playerEntityDefinitionId });
         }
 
         private void Update()

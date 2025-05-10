@@ -8,7 +8,8 @@ namespace Game.Presentation
 {
     public class PlayLauncher : Launcher
     {
-        public const string PLAYER_ENTITY_DEFINITION_KEY = "SceneLauncher_PlayerEntityDefinition";
+        public const string PLAYER_CHARACTER_DEFINITION_KEY = "SceneLauncher_PlayerCharacterDefinition";
+        public const string RECORD_KEY = "SceneLauncher_Record";
 
         public override string GetDescription()
         {
@@ -28,12 +29,13 @@ namespace Game.Presentation
         public override void Launch()
         {
             PlayManager playManager = GameObject.FindFirstObjectByType<PlayManager>();
-            playManager.Play(new Guid(GetObject<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY).Id));
+            playManager.Play(new Guid(GetObject<CharacterPresentationDefinition>(PLAYER_CHARACTER_DEFINITION_KEY).Id), GetBool(RECORD_KEY));
         }
 
         public override void Load()
         {
-            SetObject<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY, LoadObject<EntityPresentationDefinition>(PLAYER_ENTITY_DEFINITION_KEY));
+            SetObject<CharacterPresentationDefinition>(PLAYER_CHARACTER_DEFINITION_KEY, LoadObject<CharacterPresentationDefinition>(PLAYER_CHARACTER_DEFINITION_KEY));
+            SetBool(RECORD_KEY, LoadBool(RECORD_KEY));
         }
     }
 }

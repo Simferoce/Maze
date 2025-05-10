@@ -14,6 +14,10 @@ namespace Game.Presentation
         {
             this.recordSessionRepository = recordSessionRepository;
             this.gameManager = gameManager;
+        }
+
+        public void Start()
+        {
             gameManager.OnGameStarted += OnGameStarted;
             gameManager.OnGameFinished += OnGameFinished;
         }

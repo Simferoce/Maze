@@ -43,7 +43,13 @@ namespace Game.Presentation
                 if (entityVisual == null)
                 {
                     EntityPresentationDefinition entityPresentationDefinition = presentationRegistry.Get<EntityPresentationDefinition>(entity.Definition.Id);
-                    entityVisual = GameObject.Instantiate(entityPresentationDefinition.Prefab);
+                    if (entityPresentationDefinition == null)
+                    {
+                        Debug.LogError($"Could not find a representation visual of the definition of entity with id \"{entity.Definition.Id}\" of type \"{entity.GetType().Name}\"");
+                        continue;
+                    }
+
+                    entityVisual = entityPresentationDefinition.InstantiateVisual(entity);
                     entityVisual.Initialize(gameManager, entity.Id);
 
                     entities.Add(entityVisual);

@@ -39,6 +39,14 @@ namespace Game.SceneLauncher
             return string.Empty;
         }
 
+        protected bool LoadBool(string key)
+        {
+            if (EditorPrefs.HasKey(key))
+                return EditorPrefs.GetBool(key);
+
+            return false;
+        }
+
         public virtual void SetObject<T>(string key, T data)
             where T : UnityEngine.Object
         {
@@ -50,6 +58,13 @@ namespace Game.SceneLauncher
         public virtual void SetString(string key, string value)
         {
             EditorPrefs.SetString(key, value);
+            fields[key] = value;
+            OnModified?.Invoke();
+        }
+
+        public virtual void SetBool(string key, bool value)
+        {
+            EditorPrefs.SetBool(key, value);
             fields[key] = value;
             OnModified?.Invoke();
         }
@@ -68,6 +83,14 @@ namespace Game.SceneLauncher
                 return string.Empty;
 
             return (string)fields[key];
+        }
+
+        public bool GetBool(string key)
+        {
+            if (!fields.ContainsKey(key))
+                return false;
+
+            return (bool)fields[key];
         }
 
         public abstract string GetDescription();

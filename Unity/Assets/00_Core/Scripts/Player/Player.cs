@@ -2,7 +2,7 @@
 {
     public class Player : Agent
     {
-        public Entity Avatar { get; private set; }
+        public Character Avatar { get; private set; }
 
         private Vector2 direction = Vector2.Zero;
 
@@ -17,7 +17,7 @@
             gameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
         }
 
-        public void Assign(Entity playerEntity)
+        public void Assign(Character playerEntity)
         {
             Avatar = playerEntity;
         }

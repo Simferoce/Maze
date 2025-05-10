@@ -7,7 +7,8 @@ namespace Game.Presentation
     [LauncherDrawer(typeof(PlayLauncher))]
     public class PlayLauncherDrawer : LauncherDrawer<PlayLauncher>
     {
-        private ObjectField playerEntityDefinition;
+        private ObjectField playerCharacterDefinitionUIElement;
+        private Toggle recordUIElement;
 
         public PlayLauncherDrawer(PlayLauncher launcher) : base(launcher)
         {
@@ -15,8 +16,11 @@ namespace Game.Presentation
 
         public override void Initialize(VisualElement root)
         {
-            playerEntityDefinition = CreatePreferenceObjectField<EntityPresentationDefinition>("Player Entity Definition", PlayLauncher.PLAYER_ENTITY_DEFINITION_KEY);
-            root.Add(playerEntityDefinition);
+            playerCharacterDefinitionUIElement = CreatePreferenceObjectField<CharacterPresentationDefinition>("Player Definition", PlayLauncher.PLAYER_CHARACTER_DEFINITION_KEY);
+            root.Add(playerCharacterDefinitionUIElement);
+
+            recordUIElement = CreateTogglePreferenceField("Record", PlayLauncher.RECORD_KEY);
+            root.Add(recordUIElement);
         }
     }
 }

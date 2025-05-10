@@ -38,8 +38,8 @@ namespace Game.Core
             Assertion.IsTrue(IsInitialized, "The game has not been initialized yet.");
             IsStarted = true;
 
-            EntityDefinition entityDefinition = Registry.Get<EntityDefinition>(gameModeParameter.PlayerEntityDefinition);
-            Entity playerAvatar = new Entity(this, entityDefinition);
+            CharacterDefinition characterDefinition = Registry.Get<CharacterDefinition>(gameModeParameter.PlayerCharacterDefinition);
+            Character playerAvatar = new Character(this, characterDefinition);
             Player player = new Player(this);
             player.Assign(playerAvatar);
 

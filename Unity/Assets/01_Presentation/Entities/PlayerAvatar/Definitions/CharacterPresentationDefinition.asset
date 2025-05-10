@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: babe267b4c8c2b64a817f025f378100d, type: 3}
-  m_Name: PlayerAvatarEntityPresentationDefinition
+  m_Script: {fileID: 11500000, guid: d667c1c6674d3e147b7c6962adbad84d, type: 3}
+  m_Name: CharacterPresentationDefinition
   m_EditorClassIdentifier: 
-  id: f71afe13-d092-8fe4-5ac0-d790018a3698
+  id: 09906d2d-2d7d-77e4-2a07-d892521806c9
   attributeHandler:
     attributes:
     - type: 1
-      value: 65536
-  prefab: {fileID: 6794153171829126794, guid: 2dcf29f36a06d7048b70263328dcd0c8, type: 3}
+      value: 32768
+  prefab: {fileID: 8642323728296923524, guid: 2dcf29f36a06d7048b70263328dcd0c8, type: 3}

@@ -1,10 +1,10 @@
-using Game.Core;
+﻿using Game.Core;
 using System;
 using UnityEngine;
 
 namespace Game.Presentation
 {
-    public class EntityVisual : MonoBehaviour
+    public abstract class EntityVisual : MonoBehaviour
     {
         private GameManager gameManager;
 
@@ -16,7 +16,7 @@ namespace Game.Presentation
             EntityId = entityId;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             Core.Entity entity = gameManager.WorldManager.GetEntityById(EntityId);
             this.transform.position = new Vector3(entity.Transform.LocalPosition.x.ToFloat(), entity.Transform.LocalPosition.y.ToFloat(), 0f);

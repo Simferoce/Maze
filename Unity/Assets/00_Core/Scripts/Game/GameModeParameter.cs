@@ -4,6 +4,6 @@ namespace Game.Core
 {
     public class GameModeParameter
     {
-        public Guid PlayerEntityDefinition { get; set; }
+        public Guid PlayerCharacterDefinition { get; set; }
     }
 }

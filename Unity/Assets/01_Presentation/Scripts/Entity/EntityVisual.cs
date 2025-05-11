@@ -21,7 +21,7 @@ namespace Game.Presentation
         protected virtual void Update()
         {
             Core.Entity entity = gameManager.WorldManager.GetEntityById(EntityId);
-            this.transform.position = new Vector3(entity.Transform.LocalPosition.x.ToFloat(), entity.Transform.LocalPosition.y.ToFloat(), 0f) / 100f;
+            this.transform.position = new Vector3(entity.Transform.LocalPosition.X.ToFloat(), entity.Transform.LocalPosition.Y.ToFloat(), 0f) / 100f;
         }
     }
 }

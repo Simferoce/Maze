@@ -49,7 +49,7 @@ namespace Game.Presentation
                 List<RecordSessionHeaderDTO> recordSessionHeaderDTOs = await RecordSessionWebRequest.GetRecordSessionHeadersAsync(httpClient);
                 List<SessionChoice> sessionChoices = recordSessionHeaderDTOs
                     .Select(x => new SessionChoice(x.Id.ToString(), x.Name))
-                    .Prepend(new SessionChoice(string.Empty, "None")).ToList();
+                    .Prepend(new SessionChoice(string.Empty, "Undefined")).ToList();
 
                 container.Clear();
                 PopupField<SessionChoice> popupField = CreatePreferencePopField<SessionChoice>(ReplayLauncher.SESSION_NAME_KEY, "Session", sessionChoices, x => x.Name);

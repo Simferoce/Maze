@@ -7,6 +7,7 @@
         public event OnGameStartedDelegate OnGameStarted;
         public event OnGameFinishedDelegate OnGameFinished;
 
+        public PhysicsManager PhysicsManager { get; private set; }
         public UpdateManager UpdateManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public TimeManager TimeManager { get; private set; }
@@ -20,6 +21,7 @@
         {
             Logger = logger;
 
+            PhysicsManager = new PhysicsManager(this);
             UpdateManager = new UpdateManager(this);
             WorldManager = new WorldManager(this);
             CommandManager = new CommandManager(this);
@@ -70,6 +72,7 @@
 
             TimeManager.Update();
             UpdateManager.Update();
+            PhysicsManager.Update();
         }
     }
 }

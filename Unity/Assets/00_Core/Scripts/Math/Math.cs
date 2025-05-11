@@ -47,5 +47,15 @@ namespace Game.Core
 
             return value;
         }
+
+        public static Fixed64 Min(Fixed64 a, Fixed64 b)
+        {
+            return a < b ? a : b;
+        }
+
+        public static Fixed64 Max(Fixed64 a, Fixed64 b)
+        {
+            return a > b ? a : b;
+        }
     }
 }

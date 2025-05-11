@@ -38,7 +38,7 @@ namespace Game.Presentation
 
         public static string GetDisplayName(string value)
         {
-            return string.IsNullOrEmpty(value) ? "None" : value;
+            return string.IsNullOrEmpty(value) ? "Undefined" : value;
         }
     }
 }

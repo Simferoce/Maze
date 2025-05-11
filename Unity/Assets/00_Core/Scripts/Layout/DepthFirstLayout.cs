@@ -22,7 +22,7 @@ namespace Game.Core
             bool[,] layout = new bool[width, height];
             bool[,] visited = new bool[width, height];
             Stack<(Position position, Direction direction)> opens = new Stack<(Position position, Direction)>();
-            (Position position, Direction direction) first = (new Position(spawnPoint.x, spawnPoint.y), Direction.Up);
+            (Position position, Direction direction) first = (new Position(spawnPoint.X, spawnPoint.Y), Direction.Up);
             opens.Push(first);
 
             layout[first.position.x, first.position.y] = false;

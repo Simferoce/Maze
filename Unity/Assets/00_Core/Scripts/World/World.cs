@@ -14,6 +14,7 @@
 
         public void Generate(int seed)
         {
+            Vector2 wallSize = new Vector2(Definition.TileSize, Definition.TileSize);
             spawnPoint = (Definition.SpawnPoint / Definition.Scale) * Definition.TileSize * Definition.Scale;
             spawnPoint += new Vector2(Definition.TileSize * Definition.Scale, Definition.TileSize * Definition.Scale);
             spawnPoint += new Vector2(Definition.TileSize / Fixed64.FromInt(2) * Definition.Scale, Definition.TileSize / Fixed64.FromInt(2) * Definition.Scale);
@@ -33,7 +34,7 @@
                             if (layout[x, y])
                                 continue;
 
-                            GenerateWall(x + 1, y + 1, sX, sY);
+                            GenerateWall(x + 1, y + 1, sX, sY, wallSize);
                         }
                     }
                 }
@@ -45,8 +46,8 @@
                 {
                     for (int sY = 0; sY < Definition.Scale; sY++)
                     {
-                        GenerateWall(x, 0, sX, sY);
-                        GenerateWall(x, (walls.GetLength(1) - 1) / Definition.Scale, sX, sY);
+                        GenerateWall(x, 0, sX, sY, wallSize);
+                        GenerateWall(x, (walls.GetLength(1) - 1) / Definition.Scale, sX, sY, wallSize);
                     }
                 }
             }
@@ -57,8 +58,8 @@
                 {
                     for (int sY = 0; sY < Definition.Scale; sY++)
                     {
-                        GenerateWall(0, y, sX, sY);
-                        GenerateWall((walls.GetLength(0) - 1) / Definition.Scale, y, sX, sY);
+                        GenerateWall(0, y, sX, sY, wallSize);
+                        GenerateWall((walls.GetLength(0) - 1) / Definition.Scale, y, sX, sY, wallSize);
                     }
                 }
             }
@@ -67,18 +68,20 @@
             {
                 for (int sY = 0; sY < Definition.Scale; sY++)
                 {
-                    GenerateWall(0, 0, sX, sY);
-                    GenerateWall((walls.GetLength(0) - 1) / Definition.Scale, 0, sX, sY);
-                    GenerateWall((walls.GetLength(0) - 1) / Definition.Scale, (walls.GetLength(1) - 1) / Definition.Scale, sX, sY);
-                    GenerateWall(0, (walls.GetLength(1) - 1) / Definition.Scale, sX, sY);
+                    GenerateWall(0, 0, sX, sY, wallSize);
+                    GenerateWall((walls.GetLength(0) - 1) / Definition.Scale, 0, sX, sY, wallSize);
+                    GenerateWall((walls.GetLength(0) - 1) / Definition.Scale, (walls.GetLength(1) - 1) / Definition.Scale, sX, sY, wallSize);
+                    GenerateWall(0, (walls.GetLength(1) - 1) / Definition.Scale, sX, sY, wallSize);
                 }
             }
         }
 
-        private void GenerateWall(int x, int y, int sX, int sY)
+        private void GenerateWall(int x, int y, int sX, int sY, Vector2 size)
         {
             Wall wall = Definition.WallDefinition.Instantiate(GameManager) as Wall;
+            wall.Initialize(size);
             Vector2 worldPosition = new Vector2((x * Definition.Scale + sX) * Definition.TileSize, (y * Definition.Scale + sY) * Definition.TileSize);
+            worldPosition += size / 2;
             wall.SetPosition(worldPosition);
 
             if (walls[x * Definition.Scale + sX, y * Definition.Scale + sY] != null)

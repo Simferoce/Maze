@@ -17,4 +17,5 @@ MonoBehaviour:
     attributes:
     - type: 1
       value: 1638400
+  radius: 4194304
   prefab: {fileID: 8642323728296923524, guid: 2dcf29f36a06d7048b70263328dcd0c8, type: 3}

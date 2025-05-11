@@ -28,11 +28,11 @@
         {
             if (command.CommandType == ComandType.HorizontalAxis)
             {
-                direction = new Vector2(command.Value, direction.y);
+                direction = new Vector2(command.Value, direction.Y);
             }
             else if (command.CommandType == ComandType.VerticalAxis)
             {
-                direction = new Vector2(direction.x, command.Value);
+                direction = new Vector2(direction.X, command.Value);
             }
         }
 

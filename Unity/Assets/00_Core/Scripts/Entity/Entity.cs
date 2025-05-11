@@ -24,12 +24,12 @@ namespace Game.Core
         {
         }
 
-        public void Move(Vector2 translation)
+        public virtual void Move(Vector2 translation)
         {
             Transform.Translate(translation);
         }
 
-        public void SetPosition(Vector2 position)
+        public virtual void SetPosition(Vector2 position)
         {
             Transform.SetPosition(position);
         }

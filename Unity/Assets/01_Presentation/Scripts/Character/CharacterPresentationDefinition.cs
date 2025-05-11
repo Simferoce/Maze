@@ -7,6 +7,7 @@ namespace Game.Presentation
     public class CharacterPresentationDefinition : EntityPresentationDefinition
     {
         [SerializeField] private SerializedAttributeHandler attributeHandler;
+        [SerializeField, LongAsFixed64Float] private long radius;
         [SerializeField] private CharacterVisual prefab;
 
         public CharacterVisual Prefab { get => prefab; set => prefab = value; }
@@ -26,6 +27,7 @@ namespace Game.Presentation
         {
             CharacterDefinition characterDefinition = definition as CharacterDefinition;
             characterDefinition.AttributeHandler = attributeHandler.Convert();
+            characterDefinition.Radius = new Fixed64(radius);
         }
 
         public override EntityVisual InstantiateVisual(Entity entity)

@@ -1,25 +1,23 @@
 ﻿using Game.Core;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Presentation
 {
-    public class EntityVisualHandler : IDisposable
+    public class EntityVisualHandler : MonoBehaviour, IDisposable
     {
+        [SerializeField] private Camera camera;
+
         private GameManager gameManager;
         private PresentationRegistry presentationRegistry;
         private Dictionary<Guid, EntityVisual> entities = new Dictionary<Guid, EntityVisual>();
 
-        public EntityVisualHandler(PresentationRegistry presentationRegistry, GameManager gameManager)
-        {
-            this.gameManager = gameManager;
-            this.presentationRegistry = presentationRegistry;
-        }
-
-        public void Refresh(GameManager gameManager)
+        public void Refresh(PresentationRegistry presentationRegistry, GameManager gameManager)
         {
             Dispose();
+            this.presentationRegistry = presentationRegistry;
             this.gameManager = gameManager;
         }
 
@@ -50,6 +48,9 @@ namespace Game.Presentation
                 if (entities.ContainsKey(entity.Id))
                     continue;
 
+                if (!IsVisible(entity))
+                    continue;
+
                 EntityPresentationDefinition entityPresentationDefinition = presentationRegistry.Get<EntityPresentationDefinition>(entity.Definition.Id);
                 if (entityPresentationDefinition == null)
                 {
@@ -66,15 +67,36 @@ namespace Game.Presentation
                 entities.Add(entity.Id, entityVisual);
             }
 
-            foreach (KeyValuePair<Guid, EntityVisual> visualEntity in entities)
+            EntityVisual[] visualEntities = ArrayPool<EntityVisual>.Shared.Rent(entities.Values.Count);
+            entities.Values.CopyTo(visualEntities, 0);
+            for (int i = 0; i < entities.Values.Count; i++)
             {
-                Entity entity = gameManager.WorldManager.GetEntityById(visualEntity.Value.EntityId);
+                EntityVisual visualEntity = visualEntities[i];
+
+                Entity entity = gameManager.WorldManager.GetEntityById(visualEntity.EntityId);
                 if (entity == null)
                 {
-                    GameObject.Destroy(visualEntity.Value);
-                    entities.Remove(visualEntity.Key);
+                    GameObject.Destroy(visualEntity.gameObject);
+                    entities.Remove(visualEntity.EntityId);
+                }
+                else if (!IsVisible(entity))
+                {
+                    GameObject.Destroy(visualEntity.gameObject);
+                    entities.Remove(visualEntity.EntityId);
                 }
             }
+            ArrayPool<EntityVisual>.Shared.Return(visualEntities);
+        }
+
+        private bool IsVisible(Entity entity)
+        {
+            float halfHeight = camera.orthographicSize;
+            float halfWidth = camera.aspect * halfHeight;
+            UnityEngine.Vector2 position = camera.transform.position;
+
+            Game.Core.Bounds cameraBounds = new Core.Bounds(new Core.Vector2(Fixed64.FromFloat(position.x - halfWidth), Fixed64.FromFloat(position.y - halfHeight)) * 100, new Core.Vector2(Fixed64.FromFloat(position.x + halfWidth), Fixed64.FromFloat(position.y + halfHeight)) * 100);
+            Game.Core.Bounds entityWorldBounds = new Core.Bounds(entity.Transform.LocalPosition + entity.Bounds.Min, entity.Transform.LocalPosition + entity.Bounds.Max);
+            return cameraBounds.Overlaps(entityWorldBounds);
         }
     }
 }

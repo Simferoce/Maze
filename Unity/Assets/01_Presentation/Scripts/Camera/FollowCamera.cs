@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Game.Core;
+using System.Linq;
+using UnityEngine;
 
 namespace Game.Presentation
 {
@@ -6,25 +8,27 @@ namespace Game.Presentation
     public class FollowCamera : MonoBehaviour
     {
         private float distance = -0.5f;
-        private Camera camera;
-        private Transform target;
+        private GameManager gameManager;
 
-        private void Awake()
+        public void Refresh(GameManager gameManager)
         {
-            camera = GetComponent<Camera>();
-        }
-
-        public void SetTarget(Transform target)
-        {
-            this.target = target;
+            this.gameManager = gameManager;
         }
 
         private void LateUpdate()
         {
-            if (target == null)
+            if (gameManager == null)
                 return;
 
-            camera.transform.position = target.position + Vector3.forward * distance;
+            Player player = gameManager.WorldManager.GetEntites<Player>().FirstOrDefault();
+            if (player == null)
+                return;
+
+            Entity entity = gameManager.WorldManager.GetEntityById(player.Avatar.Id);
+            if (entity == null)
+                return;
+
+            this.transform.position = new Vector3(entity.Transform.LocalPosition.X / 100f, entity.Transform.LocalPosition.Y / 100f, distance);
         }
     }
 }

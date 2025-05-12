@@ -14,6 +14,7 @@
         {
             Size = size;
             CollisionHandle = GameManager.PhysicsManager.RegisterAABB(this.Transform.LocalPosition - Size / 2, this.Transform.LocalPosition + Size / 2);
+            Bounds = new Bounds(-Size / 2, Size / 2);
         }
 
         public override void SetPosition(Vector2 position)

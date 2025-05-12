@@ -10,6 +10,7 @@
         {
             this.AttributeHandler = definition.AttributeHandler.Clone();
             CollisionHandle = gameManager.PhysicsManager.RegisterCircle(this.Transform.LocalPosition, definition.Radius);
+            Bounds = new Bounds(new Vector2(-definition.Radius, -definition.Radius), new Vector2(definition.Radius, definition.Radius));
             DynamicObjectHandle = gameManager.PhysicsManager.RegisterDynamicObject(CollisionHandle);
         }
 

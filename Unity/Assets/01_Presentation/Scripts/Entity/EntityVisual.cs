@@ -16,6 +16,8 @@ namespace Game.Presentation
             this.gameManager = gameManager;
             this.presentationRegistry = presentationRegistry;
             EntityId = entityId;
+
+            Update();
         }
 
         protected virtual void Update()

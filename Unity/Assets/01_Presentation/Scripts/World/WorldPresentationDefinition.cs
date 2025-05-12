@@ -13,7 +13,6 @@ namespace Game.Presentation
         [SerializeField] private int scale;
         [SerializeField] private int spawnX;
         [SerializeField] private int spawnY;
-        [SerializeField] private WorldVisual prefab;
 
         public int Width { get => width; set => width = value; }
         public int Height { get => height; set => height = value; }
@@ -29,7 +28,7 @@ namespace Game.Presentation
 
         public override bool HasIndependentVisual()
         {
-            return true;
+            return false;
         }
 
         public override void Initialize(Registry registry, Definition definition)
@@ -45,8 +44,7 @@ namespace Game.Presentation
 
         public override EntityVisual InstantiateVisual(Entity entity)
         {
-            WorldVisual worldVisual = GameObject.Instantiate(prefab);
-            return worldVisual;
+            throw new System.NotImplementedException();
         }
     }
 }

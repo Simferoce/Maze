@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WallPresentationDefinition
   m_EditorClassIdentifier: 
   id: 2f4188d4f63ed4477a49b0fb3632e0e4
-  tile: {fileID: 11400000, guid: 7cce1728cb4327445b87ec46e449ea12, type: 2}
+  prefab: {fileID: 3925974034240384919, guid: fd5e2f165a428f344b58d1f6bdd17507, type: 3}

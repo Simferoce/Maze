@@ -8,6 +8,7 @@ namespace Game.Core
         public GameManager GameManager { get; private set; }
         public Transform Transform { get; private set; }
         public EntityDefinition Definition { get; private set; }
+        public Bounds Bounds { get; protected set; }
 
         public Entity(GameManager gameManager, EntityDefinition definition)
         {

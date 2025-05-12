@@ -6,8 +6,8 @@ namespace Game.Core
     {
         private GameManager gameManager;
         private List<DynamicObject> dynamicObjects = new List<DynamicObject>();
-        private List<Circle> circles = new List<Circle>();
-        private List<AABB> axisAlignedBoundingBoxes = new List<AABB>();
+        private List<CircleCollision> circles = new List<CircleCollision>();
+        private List<AABBCollision> axisAlignedBoundingBoxes = new List<AABBCollision>();
         private int id;
 
         public PhysicsManager(GameManager gameManager)
@@ -22,7 +22,7 @@ namespace Game.Core
                 CollisionHandle collisionHandle = dynamicObjects[i].CollisionHandle;
                 for (int j = 0; j < axisAlignedBoundingBoxes.Count; ++j)
                 {
-                    if (axisAlignedBoundingBoxes[j] == AABB.Undefined)
+                    if (axisAlignedBoundingBoxes[j] == AABBCollision.Undefined)
                         continue;
 
                     if (Overlap(collisionHandle, new CollisionHandle(CollisionType.AABB, j)))
@@ -52,40 +52,40 @@ namespace Game.Core
         public void UpdateCircle(CollisionHandle collisionHandle, Vector2 center, Fixed64 radius)
         {
             Assertion.IsTrue(collisionHandle.Type == CollisionType.Circle, $"Expecting the type of collision to be circle by was \"{collisionHandle.Type}\".");
-            circles[collisionHandle.Index] = new Circle(center, radius, circles[collisionHandle.Index].Id);
+            circles[collisionHandle.Index] = new CircleCollision(center, radius, circles[collisionHandle.Index].Id);
         }
 
         public void UpdateAABB(CollisionHandle collisionHandle, Vector2 min, Vector2 max)
         {
             Assertion.IsTrue(collisionHandle.Type == CollisionType.AABB, $"Expecting the type of collision to be aabb by was \"{collisionHandle.Type}\".");
-            axisAlignedBoundingBoxes[collisionHandle.Index] = new AABB(min, max, axisAlignedBoundingBoxes[collisionHandle.Index].Id);
+            axisAlignedBoundingBoxes[collisionHandle.Index] = new AABBCollision(min, max, axisAlignedBoundingBoxes[collisionHandle.Index].Id);
         }
         #endregion
 
         #region Registration
         public CollisionHandle RegisterCircle(Vector2 center, Fixed64 radius)
         {
-            int free = circles.IndexOf(Circle.Undefined);
+            int free = circles.IndexOf(CircleCollision.Undefined);
             if (free == -1)
             {
                 free = circles.Count;
-                circles.Add(Circle.Undefined);
+                circles.Add(CircleCollision.Undefined);
             }
 
-            circles[free] = new Circle(center, radius, id++);
+            circles[free] = new CircleCollision(center, radius, id++);
             return new CollisionHandle(CollisionType.Circle, free);
         }
 
         public CollisionHandle RegisterAABB(Vector2 min, Vector2 max)
         {
-            int free = axisAlignedBoundingBoxes.IndexOf(AABB.Undefined);
+            int free = axisAlignedBoundingBoxes.IndexOf(AABBCollision.Undefined);
             if (free == -1)
             {
                 free = axisAlignedBoundingBoxes.Count;
-                axisAlignedBoundingBoxes.Add(AABB.Undefined);
+                axisAlignedBoundingBoxes.Add(AABBCollision.Undefined);
             }
 
-            axisAlignedBoundingBoxes[free] = new AABB(min, max, id++);
+            axisAlignedBoundingBoxes[free] = new AABBCollision(min, max, id++);
             return new CollisionHandle(CollisionType.AABB, free);
         }
 
@@ -107,10 +107,10 @@ namespace Game.Core
             switch (collisionHandle.Type)
             {
                 case CollisionType.Circle:
-                    circles[collisionHandle.Index] = Circle.Undefined;
+                    circles[collisionHandle.Index] = CircleCollision.Undefined;
                     break;
                 case CollisionType.AABB:
-                    axisAlignedBoundingBoxes[collisionHandle.Index] = AABB.Undefined;
+                    axisAlignedBoundingBoxes[collisionHandle.Index] = AABBCollision.Undefined;
                     break;
                 default:
                     throw new System.NotImplementedException();

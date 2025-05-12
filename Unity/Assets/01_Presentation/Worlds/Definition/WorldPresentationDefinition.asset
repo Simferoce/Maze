@@ -20,4 +20,3 @@ MonoBehaviour:
   scale: 2
   spawnX: 1
   spawnY: 1
-  prefab: {fileID: 1710757203811926945, guid: 9230837455bbfb747aacc5829ac77dec, type: 3}

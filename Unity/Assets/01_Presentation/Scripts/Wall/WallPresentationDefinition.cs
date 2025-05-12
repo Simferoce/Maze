@@ -1,16 +1,12 @@
 ﻿using Game.Core;
-using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace Game.Presentation
 {
     [CreateAssetMenu(fileName = "WallPresentationDefinition", menuName = "Definitions/WallPresentationDefinition")]
     public class WallPresentationDefinition : EntityPresentationDefinition
     {
-        [SerializeField] private Tile tile;
-
-        public Tile Tile { get => tile; set => tile = value; }
+        [SerializeField] private WallVisual prefab;
 
         public override Definition Create()
         {
@@ -20,7 +16,7 @@ namespace Game.Presentation
 
         public override bool HasIndependentVisual()
         {
-            return false;
+            return true;
         }
 
         public override void Initialize(Registry registry, Definition definition)
@@ -29,7 +25,8 @@ namespace Game.Presentation
 
         public override EntityVisual InstantiateVisual(Entity entity)
         {
-            throw new NotImplementedException();
+            WallVisual wallVisual = GameObject.Instantiate(prefab);
+            return wallVisual;
         }
     }
 }

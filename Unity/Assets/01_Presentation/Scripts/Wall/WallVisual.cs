@@ -1,6 +1,6 @@
 ﻿namespace Game.Presentation
 {
-    public class WorldVisual : EntityVisual
+    public class WallVisual : EntityVisual
     {
 
     }

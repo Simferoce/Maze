@@ -4,9 +4,9 @@ namespace Game.Core
 {
     public static class Physics
     {
-        public static bool Overlap(Circle circle, AABB box)
+        public static bool Overlap(CircleCollision circle, AABBCollision box)
         {
-            // Find the closest point on the AABB to the circle's center
+            // Find the closest point on the AABBCollision to the circle's center
             Fixed64 closestX = Math.Max(box.Min.X, Math.Min(circle.Center.X, box.Max.X));
             Fixed64 closestY = Math.Max(box.Min.Y, Math.Min(circle.Center.Y, box.Max.Y));
 
@@ -19,7 +19,7 @@ namespace Game.Core
             return distanceSquared <= circle.Radius * circle.Radius;
         }
 
-        public static bool ComputePenetration(Circle circle, AABB box, out Vector2 direction, out float depth)
+        public static bool ComputePenetration(CircleCollision circle, AABBCollision box, out Vector2 direction, out float depth)
         {
             // Find the closest point on the box to the circle's center
             Fixed64 closestX = Math.Max(box.Min.X, Math.Min(circle.Center.X, box.Max.X));

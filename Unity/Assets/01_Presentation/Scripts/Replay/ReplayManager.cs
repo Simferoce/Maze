@@ -8,7 +8,7 @@ namespace Game.Presentation
         [SerializeField] private PresentationRegistry presentationRegistry;
 
         private GameManager gameManager;
-        private EntityVisualHandler entityVisualHandler;
+        //private EntityVisualHandler entityVisualHandler;
         private PlatformManager platformManager;
         private IRecordSessionRepository recordSessionRepository;
         private UnityLogger logger;
@@ -22,7 +22,7 @@ namespace Game.Presentation
             gameManager = new GameManager(logger);
             platformManager = new PlatformManager();
             recordSessionRepository = new RecordSessionRepositoryWeb();
-            entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
+            //entityVisualHandler = new EntityVisualHandler(presentationRegistry, gameManager);
 
             Registry registry = presentationRegistry.GenerateGameRegistry();
             gameManager.Initialize(registry);
@@ -48,7 +48,7 @@ namespace Game.Presentation
             }
 
             gameManager.Update();
-            entityVisualHandler.Synchronize();
+            //entityVisualHandler.Synchronize();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Game.Core
         {
             for (int i = 0; i < dynamicObjects.Count; ++i)
             {
-                Vector2 displacement = Vector2.Zero;
+                bool moved = false;
 
                 CollisionHandle collisionHandleA = dynamicObjects[i].CollisionHandle;
                 for (int iteration = 0; iteration < MAX_ITERATION; ++iteration)
@@ -34,24 +34,33 @@ namespace Game.Core
                             continue;
 
                         CollisionHandle collisionHandleB = new CollisionHandle(CollisionType.AABB, j);
-                        if (Overlap(collisionHandleA, collisionHandleB))
-                        {
-                            if (ComputePenetration(collisionHandleA, collisionHandleB, out Vector2 direction, out Fixed64 depth)
-                                && depth > new Fixed64(1 << 4))
-                            {
-                                displacement = direction * depth;
-                                Move(collisionHandleA, displacement);
-                                break;
-                            }
-                        }
+                        moved |= Resolve(collisionHandleA, collisionHandleB);
                     }
 
-                    if (displacement == Vector2.Zero)
+                    if (!moved)
                         break;
                 }
             }
 
             OnCollisionHandled?.Invoke();
+        }
+
+        private bool Resolve(CollisionHandle collisionHandleA, CollisionHandle collisionHandleB)
+        {
+            if (collisionHandleA == collisionHandleB)
+                return false;
+
+            if (Overlap(collisionHandleA, collisionHandleB))
+            {
+                if (ComputePenetration(collisionHandleA, collisionHandleB, out Vector2 direction, out Fixed64 depth)
+                    && depth > new Fixed64(1 << 4))
+                {
+                    Move(collisionHandleA, direction * depth);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool Overlap(CollisionHandle collisionHandleA, CollisionHandle collisionHandleB)

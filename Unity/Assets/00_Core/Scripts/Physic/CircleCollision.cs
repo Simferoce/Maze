@@ -4,17 +4,17 @@ namespace Game.Core
 {
     public struct CircleCollision
     {
-        public static CircleCollision Undefined = new CircleCollision(Vector2.Zero, Fixed64.Zero, -1);
-
         public Vector2 Center;
         public Fixed64 Radius;
         public int Id;
+        public bool Active;
 
         public CircleCollision(Vector2 center, Fixed64 radius, int id)
         {
             Center = center;
             Radius = radius;
             Id = id;
+            Active = true;
         }
 
         public static bool operator ==(CircleCollision a, CircleCollision b) => a.Center == b.Center && a.Radius == b.Radius;

@@ -2,13 +2,13 @@
 {
     public struct DynamicObject
     {
-        public static DynamicObject Undefined = default;
-
         public CollisionHandle CollisionHandle;
+        public bool Active;
 
         public DynamicObject(CollisionHandle collisionHandle)
         {
             CollisionHandle = collisionHandle;
+            Active = true;
         }
     }
 }

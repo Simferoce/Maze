@@ -30,7 +30,7 @@ namespace Game.Core
                 {
                     for (int j = 0; j < axisAlignedBoundingBoxes.Count; ++j)
                     {
-                        if (axisAlignedBoundingBoxes[j] == AABBCollision.Undefined)
+                        if (!axisAlignedBoundingBoxes[j].Active)
                             continue;
 
                         CollisionHandle collisionHandleB = new CollisionHandle(CollisionType.AABB, j);
@@ -136,41 +136,74 @@ namespace Game.Core
         #region Registration
         public CollisionHandle RegisterCircle(Vector2 center, Fixed64 radius)
         {
-            int free = circles.IndexOf(CircleCollision.Undefined);
+            int free = -1;
+            for (int i = 0; i < circles.Count; ++i)
+            {
+                if (!circles[i].Active)
+                {
+                    free = i;
+                    break;
+                }
+            }
             if (free == -1)
             {
-                free = circles.Count;
-                circles.Add(CircleCollision.Undefined);
+                circles.Add(new CircleCollision(center, radius, id++));
+                return new CollisionHandle(CollisionType.Circle, circles.Count - 1);
             }
-
-            circles[free] = new CircleCollision(center, radius, id++);
-            return new CollisionHandle(CollisionType.Circle, free);
+            else
+            {
+                circles[free] = new CircleCollision(center, radius, id++);
+                return new CollisionHandle(CollisionType.Circle, free);
+            }
         }
 
         public CollisionHandle RegisterAABB(Vector2 min, Vector2 max)
         {
-            int free = axisAlignedBoundingBoxes.IndexOf(AABBCollision.Undefined);
-            if (free == -1)
+            int free = -1;
+            for (int i = 0; i < axisAlignedBoundingBoxes.Count; ++i)
             {
-                free = axisAlignedBoundingBoxes.Count;
-                axisAlignedBoundingBoxes.Add(AABBCollision.Undefined);
+                if (!axisAlignedBoundingBoxes[i].Active)
+                {
+                    free = i;
+                    break;
+                }
             }
 
-            axisAlignedBoundingBoxes[free] = new AABBCollision(min, max, id++);
-            return new CollisionHandle(CollisionType.AABB, free);
+            if (free == -1)
+            {
+                axisAlignedBoundingBoxes.Add(new AABBCollision(min, max, id++));
+                return new CollisionHandle(CollisionType.AABB, axisAlignedBoundingBoxes.Count - 1);
+            }
+            else
+            {
+                axisAlignedBoundingBoxes[free] = new AABBCollision(min, max, id++);
+                return new CollisionHandle(CollisionType.AABB, free);
+            }
+
         }
 
         public DynamicObjectHandle RegisterDynamicObject(CollisionHandle collisionHandle)
         {
-            int free = dynamicObjects.IndexOf(DynamicObject.Undefined);
+            int free = -1;
+            for (int i = 0; i < dynamicObjects.Count; ++i)
+            {
+                if (!dynamicObjects[i].Active)
+                {
+                    free = i;
+                    break;
+                }
+            }
             if (free == -1)
             {
-                free = dynamicObjects.Count;
-                dynamicObjects.Add(DynamicObject.Undefined);
+                dynamicObjects.Add(new DynamicObject(collisionHandle));
+                return new DynamicObjectHandle(dynamicObjects.Count - 1);
+            }
+            else
+            {
+                dynamicObjects[free] = new DynamicObject(collisionHandle);
+                return new DynamicObjectHandle(free);
             }
 
-            dynamicObjects[free] = new DynamicObject(collisionHandle);
-            return new DynamicObjectHandle(free);
         }
 
         public void Unregister(CollisionHandle collisionHandle)
@@ -178,10 +211,10 @@ namespace Game.Core
             switch (collisionHandle.Type)
             {
                 case CollisionType.Circle:
-                    circles[collisionHandle.Index] = CircleCollision.Undefined;
+                    circles[collisionHandle.Index] = new CircleCollision();
                     break;
                 case CollisionType.AABB:
-                    axisAlignedBoundingBoxes[collisionHandle.Index] = AABBCollision.Undefined;
+                    axisAlignedBoundingBoxes[collisionHandle.Index] = new AABBCollision();
                     break;
                 default:
                     throw new System.NotImplementedException();
@@ -190,7 +223,7 @@ namespace Game.Core
 
         public void UnregisterDynamicObject(DynamicObjectHandle dynamicObjectHandle)
         {
-            dynamicObjects[dynamicObjectHandle.Index] = DynamicObject.Undefined;
+            dynamicObjects[dynamicObjectHandle.Index] = new DynamicObject();
         }
         #endregion
     }

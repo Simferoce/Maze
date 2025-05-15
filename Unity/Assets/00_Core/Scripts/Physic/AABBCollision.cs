@@ -4,17 +4,17 @@ namespace Game.Core
 {
     public struct AABBCollision
     {
-        public static AABBCollision Undefined = new AABBCollision(Vector2.Zero, Vector2.Zero, -1);
-
         public Vector2 Min;
         public Vector2 Max;
         public int Id;
+        public bool Active;
 
         public AABBCollision(Vector2 min, Vector2 max, int id)
         {
             Min = min;
             Max = max;
             Id = id;
+            Active = true;
         }
 
         public static bool operator ==(AABBCollision a, AABBCollision b) => a.Min == b.Min && a.Max == b.Max;

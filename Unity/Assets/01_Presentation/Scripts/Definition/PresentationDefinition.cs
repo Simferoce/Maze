@@ -20,7 +20,7 @@ namespace Game.Presentation
         private void OnEnable()
         {
             if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(this, out string guid, out _)
-                && id != new Guid(guid).ToByteArray())
+                && new Guid(id) != new Guid(guid))
             {
                 id = new Guid(guid).ToByteArray();
                 EditorUtility.SetDirty(this);
@@ -30,7 +30,7 @@ namespace Game.Presentation
         private void OnValidate()
         {
             if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(this, out string guid, out _)
-                && id != new Guid(guid).ToByteArray())
+                && new Guid(id) != new Guid(guid))
             {
                 id = new Guid(guid).ToByteArray();
                 EditorUtility.SetDirty(this);

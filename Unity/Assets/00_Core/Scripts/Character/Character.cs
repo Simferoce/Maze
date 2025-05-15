@@ -12,6 +12,18 @@
             CollisionHandle = gameManager.PhysicsManager.RegisterCircle(this.Transform.LocalPosition, definition.Radius);
             Bounds = new Bounds(new Vector2(-definition.Radius, -definition.Radius), new Vector2(definition.Radius, definition.Radius));
             DynamicObjectHandle = gameManager.PhysicsManager.RegisterDynamicObject(CollisionHandle);
+            gameManager.PhysicsManager.OnCollisionHandled += OnCollisionHandled;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            GameManager.PhysicsManager.OnCollisionHandled -= OnCollisionHandled;
+        }
+
+        private void OnCollisionHandled()
+        {
+            Transform.SetPosition(GameManager.PhysicsManager.GetCenter(CollisionHandle));
         }
 
         public override void Move(Vector2 translation)

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Game.Core
+﻿namespace Game.Core
 {
     public static class Physics
     {
@@ -19,7 +17,7 @@ namespace Game.Core
             return distanceSquared <= circle.Radius * circle.Radius;
         }
 
-        public static bool ComputePenetration(CircleCollision circle, AABBCollision box, out Vector2 direction, out float depth)
+        public static bool ComputePenetration(CircleCollision circle, AABBCollision box, out Vector2 direction, out Fixed64 depth)
         {
             // Find the closest point on the box to the circle's center
             Fixed64 closestX = Math.Max(box.Min.X, Math.Min(circle.Center.X, box.Max.X));
@@ -33,11 +31,11 @@ namespace Game.Core
             if (distanceSquared > radius * radius)
             {
                 direction = Vector2.Zero;
-                depth = 0f;
+                depth = Fixed64.Zero;
                 return false;
             }
 
-            float distance = MathF.Sqrt(distanceSquared);
+            Fixed64 distance = Math.Sqrt(distanceSquared);
 
             // Handle case where circle center is inside box (distance == 0)
             if (distance == 0f)

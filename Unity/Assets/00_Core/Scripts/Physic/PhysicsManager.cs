@@ -4,6 +4,10 @@ namespace Game.Core
 {
     public class PhysicsManager
     {
+        private const int MAX_ITERATION = 4;
+
+        public event System.Action OnCollisionHandled;
+
         private GameManager gameManager;
         private List<DynamicObject> dynamicObjects = new List<DynamicObject>();
         private List<CircleCollision> circles = new List<CircleCollision>();
@@ -19,18 +23,35 @@ namespace Game.Core
         {
             for (int i = 0; i < dynamicObjects.Count; ++i)
             {
-                CollisionHandle collisionHandle = dynamicObjects[i].CollisionHandle;
-                for (int j = 0; j < axisAlignedBoundingBoxes.Count; ++j)
-                {
-                    if (axisAlignedBoundingBoxes[j] == AABBCollision.Undefined)
-                        continue;
+                Vector2 displacement = Vector2.Zero;
 
-                    if (Overlap(collisionHandle, new CollisionHandle(CollisionType.AABB, j)))
+                CollisionHandle collisionHandleA = dynamicObjects[i].CollisionHandle;
+                for (int iteration = 0; iteration < MAX_ITERATION; ++iteration)
+                {
+                    for (int j = 0; j < axisAlignedBoundingBoxes.Count; ++j)
                     {
-                        gameManager.Logger.Log("Collision !", ILogger.LogLevel.Debug);
+                        if (axisAlignedBoundingBoxes[j] == AABBCollision.Undefined)
+                            continue;
+
+                        CollisionHandle collisionHandleB = new CollisionHandle(CollisionType.AABB, j);
+                        if (Overlap(collisionHandleA, collisionHandleB))
+                        {
+                            if (ComputePenetration(collisionHandleA, collisionHandleB, out Vector2 direction, out Fixed64 depth)
+                                && depth > new Fixed64(1 << 4))
+                            {
+                                displacement = direction * depth;
+                                Move(collisionHandleA, displacement);
+                                break;
+                            }
+                        }
                     }
+
+                    if (displacement == Vector2.Zero)
+                        break;
                 }
             }
+
+            OnCollisionHandled?.Invoke();
         }
 
         public bool Overlap(CollisionHandle collisionHandleA, CollisionHandle collisionHandleB)
@@ -41,6 +62,47 @@ namespace Game.Core
             if (collisionHandleA.Type == CollisionType.Circle && collisionHandleB.Type == CollisionType.AABB)
             {
                 return Physics.Overlap(circles[collisionHandleA.Index], axisAlignedBoundingBoxes[collisionHandleB.Index]);
+            }
+            else
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public bool ComputePenetration(CollisionHandle collisionHandleA, CollisionHandle collisionHandleB, out Vector2 direction, out Fixed64 depth)
+        {
+            Assertion.IsTrue(collisionHandleA.Type != CollisionType.Undefined, "The collision of the handle A is undefined.");
+            Assertion.IsTrue(collisionHandleB.Type != CollisionType.Undefined, "The collision of the handle B is undefined.");
+
+            if (collisionHandleA.Type == CollisionType.Circle && collisionHandleB.Type == CollisionType.AABB)
+            {
+                return Physics.ComputePenetration(circles[collisionHandleA.Index], axisAlignedBoundingBoxes[collisionHandleB.Index], out direction, out depth);
+            }
+            else
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public void Move(CollisionHandle collisionHandleA, Vector2 translation)
+        {
+            Assertion.IsTrue(collisionHandleA.Type != CollisionType.Undefined, "The collision of the handle A is undefined.");
+            if (collisionHandleA.Type == CollisionType.Circle)
+            {
+                UpdateCircle(collisionHandleA, circles[collisionHandleA.Index].Center + translation, circles[collisionHandleA.Index].Radius);
+            }
+            else
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public Vector2 GetCenter(CollisionHandle collisionHandleA)
+        {
+            Assertion.IsTrue(collisionHandleA.Type != CollisionType.Undefined, "The collision of the handle A is undefined.");
+            if (collisionHandleA.Type == CollisionType.Circle)
+            {
+                return circles[collisionHandleA.Index].Center;
             }
             else
             {

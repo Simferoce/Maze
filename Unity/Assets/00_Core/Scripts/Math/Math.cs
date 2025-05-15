@@ -57,5 +57,15 @@ namespace Game.Core
         {
             return a > b ? a : b;
         }
+
+        public static Fixed64 Abs(Fixed64 a)
+        {
+            return a.RawValue < 0 ? new Fixed64(-a.RawValue) : a;
+        }
+
+        public static Fixed64 Sign(Fixed64 a)
+        {
+            return a.RawValue > 0 ? Fixed64.One : -Fixed64.One;
+        }
     }
 }

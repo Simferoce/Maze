@@ -6,6 +6,7 @@ namespace Game.Presentation
 {
     public class PlayManager : MonoBehaviour
     {
+        [SerializeField] private PresentationConstant presentationConstant;
         [SerializeField] private PresentationRegistry presentationRegistry;
         [SerializeField] private EntityVisualHandler entityVisualHandler;
         [SerializeField] private PlayCamera playCamera;
@@ -13,22 +14,37 @@ namespace Game.Presentation
 
         private UnityLogger unityLogger;
         private GameManager gameManager;
+        private GameProvider gameProvider;
         private RecorderManager recorderManager;
         private PlatformManager platformManager;
+        private ServiceRegistry serviceRegistry;
         private IRecordSessionRepository recordSessionRepository;
         private bool synchronize = false;
 
         private void Awake()
         {
+            serviceRegistry = new ServiceRegistry();
             unityLogger = new UnityLogger();
             gameManager = new Core.GameManager(unityLogger);
+
+            gameProvider = new GameProvider(gameManager);
             platformManager = new PlatformManager();
             recordSessionRepository = new RecordSessionRepositoryWeb();
-            recorderManager = new RecorderManager(recordSessionRepository, gameManager);
+            recorderManager = new RecorderManager(serviceRegistry);
+
+            serviceRegistry.Register(presentationRegistry);
+            serviceRegistry.Register(presentationConstant);
+            serviceRegistry.Register(recorderManager);
+            serviceRegistry.Register(platformManager);
+            serviceRegistry.Register(recordSessionRepository);
+            serviceRegistry.Register(gameProvider);
 
             Registry registry = presentationRegistry.GenerateGameRegistry();
             gameManager.Initialize(registry);
-            inputManager.Initialize(gameManager);
+
+            inputManager.Initialize(serviceRegistry);
+            entityVisualHandler.Initialize(serviceRegistry);
+            playCamera.Initialize(serviceRegistry);
         }
 
         public void Play(Guid worldDefinition, Guid playerEntityDefinitionId, Guid playerDefinitionId, int seed, bool record)
@@ -37,8 +53,6 @@ namespace Game.Presentation
                 recorderManager.Start();
 
             gameManager.Start(new Game.Core.GameModeParameter() { WorldDefinition = worldDefinition, PlayerCharacterDefinition = playerEntityDefinitionId, PlayerDefinition = playerDefinitionId, Seed = seed });
-            entityVisualHandler.Refresh(presentationRegistry, gameManager);
-            playCamera.Refresh(gameManager);
         }
 
         private void Update()
@@ -49,9 +63,6 @@ namespace Game.Presentation
 
                 synchronize = false;
             }
-
-            if (!gameManager.IsStarted)
-                return;
         }
 
         private void FixedUpdate()

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Game.Core
 {
     [CreateAssetMenu(fileName = "PresentationRegistry", menuName = "Definitions/PresentationRegistry")]
-    public class PresentationRegistry : ScriptableObject
+    public class PresentationRegistry : ScriptableObject, IService
     {
         [SerializeField] private List<PresentationDefinition> definitions;
 

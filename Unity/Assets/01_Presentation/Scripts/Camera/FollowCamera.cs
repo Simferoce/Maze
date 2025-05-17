@@ -8,27 +8,49 @@ namespace Game.Presentation
     public class FollowCamera : MonoBehaviour
     {
         private float distance = -0.5f;
-        private GameManager gameManager;
+        private ServiceRegistry serviceRegistry;
+        private bool tracking = false;
 
-        public void Refresh(GameManager gameManager)
+        public void Refresh(ServiceRegistry serviceRegistry)
         {
-            this.gameManager = gameManager;
+            this.serviceRegistry = serviceRegistry;
         }
 
         private void LateUpdate()
         {
-            if (gameManager == null)
+            if (serviceRegistry == null)
                 return;
+
+            GameManager gameManager = serviceRegistry.Get<GameProvider>().GameManager;
+            if (gameManager == null)
+            {
+                tracking = false;
+                return;
+            }
 
             Player player = gameManager.WorldManager.GetEntites<Player>().FirstOrDefault();
             if (player == null)
+            {
+                tracking = false;
                 return;
+            }
 
             Entity entity = gameManager.WorldManager.GetEntityById(player.Avatar.Id);
             if (entity == null)
+            {
+                tracking = false;
                 return;
+            }
 
-            this.transform.position = new Vector3(entity.Transform.LocalPosition.X / 100f, entity.Transform.LocalPosition.Y / 100f, distance);
+            float scale = serviceRegistry.Get<PresentationConstant>().Scale;
+            Vector3 target = new Vector3(entity.Transform.LocalPosition.X / scale, entity.Transform.LocalPosition.Y / scale, distance);
+            if (!tracking)
+            {
+                tracking = true;
+                this.transform.position = target;
+            }
+
+            this.transform.position = Vector3.Lerp(this.transform.position, target, 1 - Mathf.Exp(-serviceRegistry.Get<PresentationConstant>().Damping * Time.deltaTime));
         }
     }
 }

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Game.Presentation
 {
-    public class PlatformManager
+    public class PlatformManager : IService
     {
         public void Save(string path, byte[] data)
         {

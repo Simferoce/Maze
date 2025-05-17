@@ -44,6 +44,14 @@ namespace Game.Core
 
             return new Fixed64((a.rawValue << FRACTIONAL_BITS) / b.rawValue);
         }
+        public static Fixed64 operator *(Fixed64 a, int b)
+        {
+            return new Fixed64((a.rawValue * b));
+        }
+        public static Fixed64 operator *(int a, Fixed64 b)
+        {
+            return new Fixed64((b.rawValue * a));
+        }
 
         public static bool operator ==(Fixed64 a, Fixed64 b) => a.rawValue == b.rawValue;
         public static bool operator !=(Fixed64 a, Fixed64 b) => a.rawValue != b.rawValue;

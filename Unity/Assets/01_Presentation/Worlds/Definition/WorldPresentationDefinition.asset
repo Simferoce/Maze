@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: c5af6cb5b9a844a49ab9465f196c9f0e
   wallDefinition: {fileID: 11400000, guid: d488412f3ef647d47a49b0fb3632e0e4, type: 2}
-  tileSize: 33554432
+  tileSize: 16777216
   width: 64
   height: 64
   scale: 2
-  spawnX: 1
+  spawnX: 32
   spawnY: 1

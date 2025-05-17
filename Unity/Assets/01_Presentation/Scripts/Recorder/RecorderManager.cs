@@ -3,30 +3,28 @@ using System;
 
 namespace Game.Presentation
 {
-    public class RecorderManager
+    public class RecorderManager : IService
     {
-        private GameManager gameManager;
-        private IRecordSessionRepository recordSessionRepository;
         private RecordSessionHeader currentSessionHeader;
         private RecordSessionBody currentSessionBody;
+        private ServiceRegistry serviceRegistry;
 
-        public RecorderManager(IRecordSessionRepository recordSessionRepository, GameManager gameManager)
+        public RecorderManager(ServiceRegistry serviceRegistry)
         {
-            this.recordSessionRepository = recordSessionRepository;
-            this.gameManager = gameManager;
+            this.serviceRegistry = serviceRegistry;
         }
 
         public void Start()
         {
-            gameManager.OnGameStarted += OnGameStarted;
-            gameManager.OnGameFinished += OnGameFinished;
+            serviceRegistry.Get<GameProvider>().GameManager.OnGameStarted += OnGameStarted;
+            serviceRegistry.Get<GameProvider>().GameManager.OnGameFinished += OnGameFinished;
         }
 
         private void OnGameStarted(Core.GameModeParameter gameModeParameter)
         {
             currentSessionHeader = new RecordSessionHeader() { GameModeParameter = gameModeParameter };
             currentSessionBody = new RecordSessionBody();
-            gameManager.CommandManager.OnCommandReceived += OnCommandReceived;
+            serviceRegistry.Get<GameProvider>().GameManager.CommandManager.OnCommandReceived += OnCommandReceived;
         }
 
         private void OnCommandReceived(Command command)
@@ -36,10 +34,10 @@ namespace Game.Presentation
 
         private async void OnGameFinished()
         {
-            gameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
+            serviceRegistry.Get<GameProvider>().GameManager.CommandManager.OnCommandReceived -= OnCommandReceived;
             currentSessionHeader.Date = DateTime.Now.Ticks;
             currentSessionHeader.Name = currentSessionHeader.Date.ToString();
-            await recordSessionRepository.AddRecordSessionHeaderAsync(currentSessionHeader, currentSessionBody);
+            await serviceRegistry.Get<IRecordSessionRepository>().AddRecordSessionHeaderAsync(currentSessionHeader, currentSessionBody);
         }
     }
 }

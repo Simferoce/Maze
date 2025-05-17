@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Presentation
 {
-    public interface IRecordSessionRepository
+    public interface IRecordSessionRepository : IService
     {
         public Awaitable<List<RecordSessionHeader>> GetRecordSessionHeadersAsync();
         public Awaitable<RecordSessionHeader> GetRecordSessionHeaderAsync(long id);

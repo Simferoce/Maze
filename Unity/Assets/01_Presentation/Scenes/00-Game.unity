@@ -182,7 +182,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05be97c956e876647b4376e052ec2480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  presentationConstant: {fileID: 11400000, guid: 79c719a0a4b83d245a87ca018b16b4b1, type: 2}
   presentationRegistry: {fileID: 11400000, guid: b189aecd2f943b54aa6aca345909f7f2, type: 2}
   entityVisualHandler: {fileID: 1412500028}
   playCamera: {fileID: 578010057}

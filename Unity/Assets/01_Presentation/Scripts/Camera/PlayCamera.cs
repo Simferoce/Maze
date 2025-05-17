@@ -1,5 +1,4 @@
-﻿using Game.Core;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Presentation
 {
@@ -7,12 +6,9 @@ namespace Game.Presentation
     {
         [SerializeField] private FollowCamera followCamera;
 
-        private GameManager gameManager;
-
-        public void Refresh(GameManager gameManager)
+        public void Initialize(ServiceRegistry serviceRegistry)
         {
-            this.gameManager = gameManager;
-            followCamera.Refresh(gameManager);
+            followCamera.Refresh(serviceRegistry);
         }
     }
 }

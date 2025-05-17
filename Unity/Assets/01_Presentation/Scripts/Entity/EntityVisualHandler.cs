@@ -10,15 +10,13 @@ namespace Game.Presentation
     {
         [SerializeField] private Camera camera;
 
-        private GameManager gameManager;
-        private PresentationRegistry presentationRegistry;
+        private ServiceRegistry serviceRegistry;
         private Dictionary<Guid, EntityVisual> entities = new Dictionary<Guid, EntityVisual>();
 
-        public void Refresh(PresentationRegistry presentationRegistry, GameManager gameManager)
+        public void Initialize(ServiceRegistry serviceRegistry)
         {
+            this.serviceRegistry = serviceRegistry;
             Dispose();
-            this.presentationRegistry = presentationRegistry;
-            this.gameManager = gameManager;
         }
 
         public void Dispose()
@@ -42,7 +40,7 @@ namespace Game.Presentation
 
         public void Synchronize()
         {
-            IEnumerable<Core.Entity> gameEntities = gameManager.WorldManager.GetEntites<Entity>();
+            IEnumerable<Core.Entity> gameEntities = serviceRegistry.Get<GameProvider>().GameManager.WorldManager.GetEntites<Entity>();
             foreach (Game.Core.Entity entity in gameEntities)
             {
                 if (entities.ContainsKey(entity.Id))
@@ -51,7 +49,7 @@ namespace Game.Presentation
                 if (!IsVisible(entity))
                     continue;
 
-                EntityPresentationDefinition entityPresentationDefinition = presentationRegistry.Get<EntityPresentationDefinition>(entity.Definition.Id);
+                EntityPresentationDefinition entityPresentationDefinition = serviceRegistry.Get<PresentationRegistry>().Get<EntityPresentationDefinition>(entity.Definition.Id);
                 if (entityPresentationDefinition == null)
                 {
                     Debug.LogError($"Could not find a representation visual of the definition of entity with id \"{entity.Definition.Id}\" of type \"{entity.GetType().Name}\"");
@@ -62,7 +60,7 @@ namespace Game.Presentation
                     continue;
 
                 EntityVisual entityVisual = entityPresentationDefinition.InstantiateVisual(entity);
-                entityVisual.Initialize(gameManager, presentationRegistry, entity.Id);
+                entityVisual.Initialize(serviceRegistry, entity.Id);
 
                 entities.Add(entity.Id, entityVisual);
             }
@@ -73,7 +71,7 @@ namespace Game.Presentation
             {
                 EntityVisual visualEntity = visualEntities[i];
 
-                Entity entity = gameManager.WorldManager.GetEntityById(visualEntity.EntityId);
+                Entity entity = serviceRegistry.Get<GameProvider>().GameManager.WorldManager.GetEntityById(visualEntity.EntityId);
                 if (entity == null)
                 {
                     GameObject.Destroy(visualEntity.gameObject);
@@ -94,7 +92,8 @@ namespace Game.Presentation
             float halfWidth = camera.aspect * halfHeight;
             UnityEngine.Vector2 position = camera.transform.position;
 
-            Game.Core.Bounds cameraBounds = new Core.Bounds(new Core.Vector2(Fixed64.FromFloat(position.x - halfWidth), Fixed64.FromFloat(position.y - halfHeight)) * 100, new Core.Vector2(Fixed64.FromFloat(position.x + halfWidth), Fixed64.FromFloat(position.y + halfHeight)) * 100);
+            float scale = serviceRegistry.Get<PresentationConstant>().Scale;
+            Game.Core.Bounds cameraBounds = new Core.Bounds(new Core.Vector2(Fixed64.FromFloat((position.x - halfWidth) * scale), Fixed64.FromFloat((position.y - halfHeight) * scale)), new Core.Vector2(Fixed64.FromFloat((position.x + halfWidth) * scale), Fixed64.FromFloat((position.y + halfHeight) * scale)));
             Game.Core.Bounds entityWorldBounds = new Core.Bounds(entity.Transform.LocalPosition + entity.Bounds.Min, entity.Transform.LocalPosition + entity.Bounds.Max);
             return cameraBounds.Overlaps(entityWorldBounds);
         }

@@ -94,7 +94,7 @@ namespace Game.Presentation
 
             float scale = serviceRegistry.Get<PresentationConstant>().Scale;
             Game.Core.Bounds cameraBounds = new Core.Bounds(new Core.Vector2(Fixed64.FromFloat((position.x - halfWidth) * scale), Fixed64.FromFloat((position.y - halfHeight) * scale)), new Core.Vector2(Fixed64.FromFloat((position.x + halfWidth) * scale), Fixed64.FromFloat((position.y + halfHeight) * scale)));
-            Game.Core.Bounds entityWorldBounds = new Core.Bounds(entity.Transform.LocalPosition + entity.Bounds.Min, entity.Transform.LocalPosition + entity.Bounds.Max);
+            Game.Core.Bounds entityWorldBounds = new Core.Bounds(entity.LocalPosition + entity.Bounds.Min, entity.LocalPosition + entity.Bounds.Max);
             return cameraBounds.Overlaps(entityWorldBounds);
         }
     }

@@ -5,5 +5,7 @@
         Undefined,
         HorizontalAxis,
         VerticalAxis,
+        LookAtPointX,
+        LookAtPointY,
     }
 }

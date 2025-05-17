@@ -6,6 +6,7 @@
         public new PlayerDefinition Definition { get; private set; }
 
         private Vector2 direction = Vector2.Zero;
+        private Vector2 lookAt;
 
         public Player(GameManager gameManager, PlayerDefinition definition) : base(gameManager, definition)
         {
@@ -22,6 +23,7 @@
         public void Assign(Character playerEntity)
         {
             Avatar = playerEntity;
+            lookAt = playerEntity.LocalPosition + Vector2.Up;
         }
 
         private void OnCommandReceived(Command command)
@@ -34,6 +36,14 @@
             {
                 direction = new Vector2(direction.X, command.Value);
             }
+            else if (command.CommandType == ComandType.LookAtPointX)
+            {
+                lookAt = new Vector2(command.Value, lookAt.Y);
+            }
+            else if (command.CommandType == ComandType.LookAtPointY)
+            {
+                lookAt = new Vector2(lookAt.X, command.Value);
+            }
         }
 
         public override void Update()
@@ -43,6 +53,7 @@
             Vector2 displacement = direction.Normalized * Avatar.AttributeHandler.Get(AttributeType.MovementSpeed).Value;
 
             Avatar.Move(displacement);
+            Avatar.LookAt(lookAt);
         }
     }
 }

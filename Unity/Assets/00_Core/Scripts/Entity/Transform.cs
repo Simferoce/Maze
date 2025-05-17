@@ -17,5 +17,20 @@
         {
             LocalPosition = position;
         }
+
+        public void SetRotation(Fixed64 rotation)
+        {
+            LocalRotation = rotation;
+        }
+
+        public void LookAt(Vector2 point)
+        {
+            Vector2 delta = point - LocalPosition;
+            if (delta == Vector2.Zero)
+                return;
+
+            Fixed64 angle = Math.ATan2(delta.Y, delta.X);
+            LocalRotation = angle;
+        }
     }
 }

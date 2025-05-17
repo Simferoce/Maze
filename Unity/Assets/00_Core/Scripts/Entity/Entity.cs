@@ -6,9 +6,11 @@ namespace Game.Core
     {
         public Guid Id { get; private set; }
         public GameManager GameManager { get; private set; }
-        public Transform Transform { get; private set; }
+        protected Transform Transform { get; private set; }
         public EntityDefinition Definition { get; private set; }
         public Bounds Bounds { get; protected set; }
+        public Vector2 LocalPosition => Transform.LocalPosition;
+        public Fixed64 LocalRotation => Transform.LocalRotation;
 
         public Entity(GameManager gameManager, EntityDefinition definition)
         {
@@ -33,6 +35,16 @@ namespace Game.Core
         public virtual void SetPosition(Vector2 position)
         {
             Transform.SetPosition(position);
+        }
+
+        public virtual void SetRotation(Fixed64 rotation)
+        {
+            Transform.SetRotation(rotation);
+        }
+
+        public virtual void LookAt(Vector2 point)
+        {
+            Transform.LookAt(point);
         }
     }
 

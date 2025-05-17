@@ -10,6 +10,9 @@ namespace Game.Core
 
         public static readonly Fixed64 Zero = new Fixed64(0);
         public static readonly Fixed64 One = new Fixed64(ONE);
+        public static readonly Fixed64 PI = new Fixed64(205_887);
+        public static readonly Fixed64 TWO_PI = new Fixed64(411_774);
+        public static readonly Fixed64 PI_HALF = new Fixed64(102_944);
 
         public long RawValue => rawValue;
 

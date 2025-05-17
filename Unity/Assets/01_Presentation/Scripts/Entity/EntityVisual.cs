@@ -20,14 +20,14 @@ namespace Game.Presentation
             EntityId = entityId;
 
             Core.Entity entity = serviceRegistry.Get<GameProvider>().GameManager.WorldManager.GetEntityById(EntityId);
-            Vector3 targetPosition = new Vector3(entity.Transform.LocalPosition.X.ToFloat(), entity.Transform.LocalPosition.Y.ToFloat(), 0f) / 25f;
+            Vector3 targetPosition = new Vector3(entity.Transform.LocalPosition.X.ToFloat(), entity.Transform.LocalPosition.Y.ToFloat(), 0f) / serviceRegistry.Get<PresentationConstant>().Scale;
             this.transform.position = targetPosition;
         }
 
         protected virtual void Update()
         {
             Core.Entity entity = serviceRegistry.Get<GameProvider>().GameManager.WorldManager.GetEntityById(EntityId);
-            Vector3 targetPosition = new Vector3(entity.Transform.LocalPosition.X.ToFloat(), entity.Transform.LocalPosition.Y.ToFloat(), 0f) / 25f;
+            Vector3 targetPosition = new Vector3(entity.Transform.LocalPosition.X.ToFloat(), entity.Transform.LocalPosition.Y.ToFloat(), 0f) / serviceRegistry.Get<PresentationConstant>().Scale;
             this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, 1 - Mathf.Exp(-damping * Time.deltaTime));
         }
     }

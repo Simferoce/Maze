@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa12b7bf8d8de445acfd570b042d12f, type: 3}
   m_Name: PresentationConstant
   m_EditorClassIdentifier: 
-  scale: 25
+  scale: 6.25
   damping: 25

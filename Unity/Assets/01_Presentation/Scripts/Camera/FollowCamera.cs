@@ -16,6 +16,7 @@ namespace Game.Presentation
             this.serviceRegistry = serviceRegistry;
         }
 
+
         private void LateUpdate()
         {
             if (serviceRegistry == null)

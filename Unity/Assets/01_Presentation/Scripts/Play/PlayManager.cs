@@ -38,13 +38,14 @@ namespace Game.Presentation
             serviceRegistry.Register(platformManager);
             serviceRegistry.Register(recordSessionRepository);
             serviceRegistry.Register(gameProvider);
+            serviceRegistry.Register(playCamera);
 
             Registry registry = presentationRegistry.GenerateGameRegistry();
             gameManager.Initialize(registry);
 
+            playCamera.Initialize(serviceRegistry);
             inputManager.Initialize(serviceRegistry);
             entityVisualHandler.Initialize(serviceRegistry);
-            playCamera.Initialize(serviceRegistry);
         }
 
         public void Play(Guid worldDefinition, Guid playerEntityDefinitionId, Guid playerDefinitionId, int seed, bool record)

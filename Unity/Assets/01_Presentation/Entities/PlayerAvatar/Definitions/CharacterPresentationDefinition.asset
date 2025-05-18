@@ -16,7 +16,7 @@ MonoBehaviour:
   attributeHandler:
     attributes:
     - type: 1
-      value: 327680
+      value: 262144
   radius: 1048576
   abilityDefinitions:
   - {fileID: 11400000, guid: 8295d1dc7be4064458ed196ac5fa1d42, type: 2}

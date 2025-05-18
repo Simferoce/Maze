@@ -27,6 +27,7 @@ namespace Game.Presentation
             Core.Entity entity = serviceRegistry.Get<GameProvider>().GameManager.WorldManager.GetEntityById(EntityId);
             Vector3 targetPosition = new Vector3(entity.LocalPosition.X.ToFloat(), entity.LocalPosition.Y.ToFloat(), 0f) / serviceRegistry.Get<PresentationConstant>().Scale;
             this.transform.position = Vector3.Lerp(this.transform.position, targetPosition, 1 - Mathf.Exp(-serviceRegistry.Get<PresentationConstant>().Damping * Time.deltaTime));
+            Debug.Log(this.transform.position.x);
         }
 
         protected virtual void SynchronizeRotation()

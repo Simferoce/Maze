@@ -42,7 +42,7 @@
         public static Vector2 operator *(Fixed64 scalar, Vector2 v) => new Vector2(v.X * scalar, v.Y * scalar);
         public static Vector2 operator *(int scalar, Vector2 v) => new Vector2(v.X * scalar, v.Y * scalar);
         public static Vector2 operator /(Vector2 v, Fixed64 scalar) => new Vector2(v.X / scalar, v.Y / scalar);
-        public static Vector2 operator /(Vector2 v, int scalar) => new Vector2(v.X / scalar, v.Y / scalar);
+        public static Vector2 operator /(Vector2 v, int scalar) => new Vector2(v.X / Fixed64.FromInt(scalar), v.Y / Fixed64.FromInt(scalar));
 
         public static bool operator ==(Vector2 a, Vector2 b) => a.X == b.X && a.Y == b.Y;
         public static bool operator !=(Vector2 a, Vector2 b) => !(a == b);

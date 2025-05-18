@@ -43,7 +43,7 @@ namespace Game.Presentation
             }
 
             float scale = serviceRegistry.Get<PresentationConstant>().Scale;
-            Vector3 target = new Vector3(entity.LocalPosition.X / scale, entity.LocalPosition.Y / scale, transform.position.z);
+            Vector3 target = new Vector3(entity.LocalPosition.X.ToFloat() / scale, entity.LocalPosition.Y.ToFloat() / scale, transform.position.z);
             if (!tracking)
             {
                 tracking = true;

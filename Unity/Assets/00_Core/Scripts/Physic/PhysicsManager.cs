@@ -21,6 +21,7 @@ namespace Game.Core
 
         public void Update()
         {
+            return;
             for (int i = 0; i < dynamicObjects.Count; ++i)
             {
                 bool moved = false;

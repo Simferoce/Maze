@@ -17,7 +17,7 @@
             Vector2 wallSize = new Vector2(Definition.TileSize, Definition.TileSize);
             spawnPoint = (Definition.SpawnPoint / Definition.Scale) * Definition.TileSize * Definition.Scale;
             spawnPoint += new Vector2(Definition.TileSize * Definition.Scale, Definition.TileSize * Definition.Scale);
-            spawnPoint += new Vector2(Definition.TileSize / Fixed64.FromInt(2) * Definition.Scale, Definition.TileSize / Fixed64.FromInt(2) * Definition.Scale);
+            //spawnPoint += new Vector2(Definition.TileSize / Fixed64.FromInt(2) * Definition.Scale, Definition.TileSize / Fixed64.FromInt(2) * Definition.Scale);
             walls = new Wall[((Definition.Width / Definition.Scale) + 2) * Definition.Scale, ((Definition.Height / Definition.Scale) + 2) * Definition.Scale];
 
             DepthFirstLayout depthFirstLayout = new DepthFirstLayout();

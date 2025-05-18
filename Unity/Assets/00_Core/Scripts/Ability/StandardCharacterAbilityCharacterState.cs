@@ -7,7 +7,7 @@
 
         public override bool CanUseAbility => false;
         public long ElapsedTick => StateMachine.Character.GameManager.TimeManager.CurrentTick - startedAt;
-        public long Duration => ability.AttributeHandler.Get(AttributeType.Duration).Value;
+        public long Duration => ability.AttributeHandler.Get(AttributeType.Duration).Value.ToInt();
 
         public StandardCharacterAbilityCharacterState(StandardCharacterAbility ability, CharacterStateMachine stateMachine) : base(stateMachine)
         {

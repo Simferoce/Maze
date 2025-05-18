@@ -38,7 +38,7 @@
             Fixed64 distance = Math.Sqrt(distanceSquared);
 
             // Handle case where circle center is inside box (distance == 0)
-            if (distance == 0f)
+            if (distance == Fixed64.Zero)
             {
                 // Find the minimal axis to push out
                 Fixed64 left = circle.Center.X - box.Min.X;

@@ -7,11 +7,12 @@
 
         public override bool CanUseAbility => false;
         public long ElapsedTick => StateMachine.Character.GameManager.TimeManager.CurrentTick - startedAt;
-        public long Duration => ability.Definition.Duration;
+        public long Duration => ability.AttributeHandler.Get(AttributeType.Duration).Value;
 
         public StandardCharacterAbilityCharacterState(StandardCharacterAbility ability, CharacterStateMachine stateMachine) : base(stateMachine)
         {
             this.ability = ability;
+            this.AttributeHandler = ability.AttributeHandler.Clone();
         }
 
         public override void Enter()
@@ -24,7 +25,7 @@
         public override void Update()
         {
             base.Update();
-            if (startedAt + ability.Definition.Duration <= StateMachine.Character.GameManager.TimeManager.CurrentTick)
+            if (startedAt + Duration <= StateMachine.Character.GameManager.TimeManager.CurrentTick)
                 StateMachine.Change(new MoveCharacterState(StateMachine));
         }
 

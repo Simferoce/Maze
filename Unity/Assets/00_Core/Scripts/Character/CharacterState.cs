@@ -3,6 +3,7 @@
     public abstract class CharacterState
     {
         public CharacterStateMachine StateMachine { get; private set; }
+        public AttributeHandler AttributeHandler { get; protected set; }
         public virtual bool CanMove => true;
         public virtual bool CanUseAbility => true;
 

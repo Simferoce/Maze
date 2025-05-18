@@ -13,11 +13,18 @@ namespace Game.Core
             attributes[attributeType] = new Attribute(attributeType, value);
         }
 
-        public void Update(AttributeType attributeType, Fixed64 value)
+        public void Set(AttributeType attributeType, Fixed64 value)
         {
             Assertion.IsTrue(attributes.ContainsKey(attributeType), $"Could not update the attribute with the type \"{attributeType}\" because it is not present in the handler.");
 
             attributes[attributeType] = new Attribute(attributeType, value);
+        }
+
+        public void Multiple(AttributeType attributeType, Fixed64 value)
+        {
+            Assertion.IsTrue(attributes.ContainsKey(attributeType), $"Could not update the attribute with the type \"{attributeType}\" because it is not present in the handler.");
+
+            attributes[attributeType] = new Attribute(attributeType, attributes[attributeType].Value * value);
         }
 
         public Attribute Get(AttributeType attributeType)

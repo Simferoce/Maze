@@ -36,6 +36,14 @@ namespace Game.Core
         private void Update()
         {
             StateMachine.Update();
+
+            this.AttributeHandler = Definition.AttributeHandler.Clone();
+
+            if (StateMachine.CurrentState.AttributeHandler == null)
+                return;
+
+            if (StateMachine.CurrentState.AttributeHandler.TryGet(AttributeType.MovementSpeedMultiplier, out Attribute movementSpeedMultiplier))
+                this.AttributeHandler.Multiple(AttributeType.MovementSpeed, movementSpeedMultiplier.Value);
         }
 
         private void OnCollisionHandled()

@@ -6,8 +6,8 @@ namespace Game.Presentation
     [CreateAssetMenu(fileName = "PresentationCharacterStandardAbilityDefinition", menuName = "Definitions/PresentationCharacterStandardAbilityDefinition")]
     public class PresentationCharacterStandardAbilityDefinition : PresentationCharacterAbilityDefinition
     {
-        [SerializeField, SecondAsTick] private int duration;
         [SerializeField] private AnimationClip animation;
+        [SerializeField] private SerializedAttributeHandler serializedAttributeHandler;
 
         public AnimationClip Animation { get => animation; set => animation = value; }
 
@@ -19,7 +19,7 @@ namespace Game.Presentation
         public override void Initialize(Registry registry, Definition definition)
         {
             StandardCharacterAbilityDefinition standardCharacterAbilityDefinition = definition as StandardCharacterAbilityDefinition;
-            standardCharacterAbilityDefinition.Duration = duration;
+            standardCharacterAbilityDefinition.AttributeHandler = serializedAttributeHandler.Convert();
         }
     }
 }

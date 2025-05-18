@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: PresentationCharacterStandardAbilityDefinition
   m_EditorClassIdentifier: 
   id: dcd19582e47b440658ed196ac5fa1d42
-  duration: 10
+  duration: 40
   animation: {fileID: 7400000, guid: 499d5844e8c0412409844061ec82a126, type: 2}
+  serializedAttributeHandler:
+    attributes:
+    - type: 3
+      value: 2621440
+    - type: 2
+      value: 16384

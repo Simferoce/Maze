@@ -4,6 +4,8 @@ namespace Game.Core
 {
     public abstract class CharacterAbilityDefinition : Definition
     {
+        public AttributeHandler AttributeHandler { get; set; }
+
         public CharacterAbilityDefinition(Guid id) : base(id)
         {
         }

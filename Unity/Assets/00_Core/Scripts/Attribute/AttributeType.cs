@@ -3,6 +3,8 @@
     public enum AttributeType
     {
         Undefined,
-        MovementSpeed
+        MovementSpeed,
+        MovementSpeedMultiplier,
+        Duration
     }
 }

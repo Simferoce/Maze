@@ -4,9 +4,11 @@
     {
         public CharacterAbilityDefinition Definition { get; private set; }
         public Character Character { get; private set; }
+        public AttributeHandler AttributeHandler { get; private set; }
 
         public CharacterAbility(Character character, CharacterAbilityDefinition definition)
         {
+            this.AttributeHandler = definition.AttributeHandler.Clone();
             Definition = definition;
             Character = character;
         }

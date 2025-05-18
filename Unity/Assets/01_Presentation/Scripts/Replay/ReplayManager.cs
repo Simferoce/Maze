@@ -62,7 +62,7 @@ namespace Game.Presentation
 
             while (currentSessionBody.Commands.Count > commandIndex && currentSessionBody.Commands[commandIndex].Tick == gameManager.TimeManager.CurrentTick)
             {
-                gameManager.CommandManager.Execute(currentSessionBody.Commands[commandIndex]);
+                gameManager.CommandManager.Add(currentSessionBody.Commands[commandIndex]);
 
                 commandIndex++;
             }

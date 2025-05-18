@@ -7,5 +7,6 @@
         VerticalAxis,
         LookAtPointX,
         LookAtPointY,
+        UseAbility
     }
 }

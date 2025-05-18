@@ -2,27 +2,30 @@ using Game.Core;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-[CustomPropertyDrawer(typeof(LongAsFixed64FloatAttribute))]
-public class LongAsFixed64FloatDrawer : PropertyDrawer
+namespace Game.Presentation
 {
-    public override VisualElement CreatePropertyGUI(SerializedProperty property)
+    [CustomPropertyDrawer(typeof(LongAsFixed64FloatAttribute))]
+    public class LongAsFixed64FloatDrawer : PropertyDrawer
     {
-        var attr = (LongAsFixed64FloatAttribute)attribute;
-
-        float valueAsFloat = new Fixed64(property.longValue).ToFloat();
-
-        var floatField = new FloatField(property.displayName)
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            value = valueAsFloat
-        };
-        floatField.AddToClassList(BaseField<float>.alignedFieldUssClassName);
-        floatField.RegisterValueChangedCallback(evt =>
-        {
-            long fixedRaw = Fixed64.FromFloat(evt.newValue).RawValue;
-            property.longValue = fixedRaw;
-            property.serializedObject.ApplyModifiedProperties();
-        });
+            var attr = (LongAsFixed64FloatAttribute)attribute;
 
-        return floatField;
+            float valueAsFloat = new Fixed64(property.longValue).ToFloat();
+
+            var floatField = new FloatField(property.displayName)
+            {
+                value = valueAsFloat
+            };
+            floatField.AddToClassList(BaseField<float>.alignedFieldUssClassName);
+            floatField.RegisterValueChangedCallback(evt =>
+            {
+                long fixedRaw = Fixed64.FromFloat(evt.newValue).RawValue;
+                property.longValue = fixedRaw;
+                property.serializedObject.ApplyModifiedProperties();
+            });
+
+            return floatField;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Game.Core
+﻿using System.Collections.Generic;
+
+namespace Game.Core
 {
     public class CommandManager
     {
@@ -6,15 +8,24 @@
         public event OnCommandReceivedDelegate OnCommandReceived;
 
         private GameManager gameManager;
+        private List<Command> commands = new List<Command>();
 
         public CommandManager(GameManager gameManager)
         {
             this.gameManager = gameManager;
         }
 
-        public void Execute(Command command)
+        public void Add(Command command)
         {
-            OnCommandReceived?.Invoke(command);
+            commands.Add(command);
+        }
+
+        public void Update()
+        {
+            foreach (Command command in commands)
+                OnCommandReceived?.Invoke(command);
+
+            commands.Clear();
         }
     }
 }

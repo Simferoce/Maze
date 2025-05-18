@@ -18,4 +18,6 @@ MonoBehaviour:
     - type: 1
       value: 327680
   radius: 1048576
+  abilityDefinitions:
+  - {fileID: 11400000, guid: 8295d1dc7be4064458ed196ac5fa1d42, type: 2}
   prefab: {fileID: 8642323728296923524, guid: 2dcf29f36a06d7048b70263328dcd0c8, type: 3}

@@ -44,6 +44,10 @@
             {
                 lookAt = new Vector2(lookAt.X, command.Value);
             }
+            else if (command.CommandType == ComandType.UseAbility)
+            {
+                Avatar.UseAbility(command.Value.ToInt());
+            }
         }
 
         public override void Update()

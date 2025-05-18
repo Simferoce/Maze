@@ -9,6 +9,7 @@ namespace Game.Presentation
     {
         private Dictionary<Core.ComandType, Game.Core.Command> axisCommands = new Dictionary<Core.ComandType, Game.Core.Command>();
         private Dictionary<Core.ComandType, Game.Core.Command> lastAxisCommands = new Dictionary<Core.ComandType, Game.Core.Command>();
+        private Dictionary<Core.ComandType, Game.Core.Command> actionCommands = new Dictionary<Core.ComandType, Game.Core.Command>();
         private ServiceRegistry serviceRegistry;
 
         public void Initialize(ServiceRegistry serviceRegistry)
@@ -32,6 +33,13 @@ namespace Game.Presentation
             axisCommands[Core.ComandType.VerticalAxis] = new Core.Command() { CommandType = Core.ComandType.VerticalAxis, Value = Core.Fixed64.FromFloat(value), Tick = gameManager.TimeManager.CurrentTick };
         }
 
+        public void OnAbilityUse1(InputAction.CallbackContext context)
+        {
+            GameManager gameManager = serviceRegistry.Get<GameProvider>().GameManager;
+            if (context.performed)
+                actionCommands[Core.ComandType.UseAbility] = new Command() { CommandType = ComandType.UseAbility, Value = Fixed64.FromInt(0), Tick = gameManager.TimeManager.CurrentTick };
+        }
+
         public void Flush()
         {
             GameManager gameManager = serviceRegistry.Get<GameProvider>().GameManager;
@@ -46,10 +54,14 @@ namespace Game.Presentation
                     && lastAxisCommands[command.Key].Value == command.Value.Value)
                     continue;
 
-                gameManager.CommandManager.Execute(command.Value);
+                gameManager.CommandManager.Add(command.Value);
                 lastAxisCommands[command.Key] = command.Value;
             }
 
+            foreach (KeyValuePair<Core.ComandType, Game.Core.Command> command in actionCommands)
+                gameManager.CommandManager.Add(command.Value);
+
+            actionCommands.Clear();
             axisCommands.Clear();
         }
     }

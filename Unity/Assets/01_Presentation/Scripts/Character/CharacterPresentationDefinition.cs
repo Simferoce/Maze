@@ -1,4 +1,6 @@
 ﻿using Game.Core;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Presentation
@@ -8,6 +10,7 @@ namespace Game.Presentation
     {
         [SerializeField] private SerializedAttributeHandler attributeHandler;
         [SerializeField, LongAsFixed64Float] private long radius;
+        [SerializeField] private List<PresentationCharacterAbilityDefinition> abilityDefinitions;
         [SerializeField] private CharacterVisual prefab;
 
         public CharacterVisual Prefab { get => prefab; set => prefab = value; }
@@ -28,6 +31,7 @@ namespace Game.Presentation
             CharacterDefinition characterDefinition = definition as CharacterDefinition;
             characterDefinition.AttributeHandler = attributeHandler.Convert();
             characterDefinition.Radius = new Fixed64(radius);
+            characterDefinition.AbilityDefinitions = abilityDefinitions.Select(x => registry.Get<CharacterAbilityDefinition>(x.Id)).ToList();
         }
 
         public override EntityVisual InstantiateVisual(Entity entity)

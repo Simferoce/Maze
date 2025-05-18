@@ -71,6 +71,7 @@
             Assertion.IsTrue(IsStarted, "The game has not been started yet.");
 
             TimeManager.Update();
+            CommandManager.Update();
             UpdateManager.Update();
             PhysicsManager.Update();
         }

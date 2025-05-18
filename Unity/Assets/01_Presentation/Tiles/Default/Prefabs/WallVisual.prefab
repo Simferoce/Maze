@@ -132,7 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6872520b8899340951c55cc2d5b051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damping: 25
 --- !u!1 &6051496618453839927
 GameObject:
   m_ObjectHideFlags: 0

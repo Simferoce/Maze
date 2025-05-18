@@ -9,17 +9,14 @@ namespace Game.Presentation
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            // -------- get the current project‑wide fixed‑timestep --------
-            float fixedDt = Time.fixedDeltaTime;          // e.g. 0.02 s
+            float fixedDt = Time.fixedDeltaTime;
 
-            // -------- read: ticks → seconds -----------------------------
-            int storedTicks = property.intValue;       // raw fixed‑point “ticks”
+            int storedTicks = property.intValue;
             float seconds = storedTicks * fixedDt;
 
             var floatField = new FloatField(property.displayName) { value = seconds };
             floatField.AddToClassList(BaseField<float>.alignedFieldUssClassName);
 
-            // -------- write: seconds → ticks ----------------------------
             floatField.RegisterValueChangedCallback(evt =>
             {
                 float newSeconds = evt.newValue;

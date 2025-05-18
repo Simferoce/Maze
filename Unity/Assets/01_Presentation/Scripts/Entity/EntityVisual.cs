@@ -12,7 +12,7 @@ namespace Game.Presentation
 
         public Guid EntityId { get; private set; }
 
-        public void Initialize(ServiceRegistry serviceRegistry, Guid entityId)
+        public virtual void Initialize(ServiceRegistry serviceRegistry, Guid entityId)
         {
             this.serviceRegistry = serviceRegistry;
             EntityId = entityId;

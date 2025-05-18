@@ -7,6 +7,9 @@ namespace Game.Presentation
     public class PresentationCharacterStandardAbilityDefinition : PresentationCharacterAbilityDefinition
     {
         [SerializeField, SecondAsTick] private int duration;
+        [SerializeField] private AnimationClip animation;
+
+        public AnimationClip Animation { get => animation; set => animation = value; }
 
         public override Definition Create()
         {

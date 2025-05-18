@@ -5,6 +5,10 @@
         private long startedAt;
         private StandardCharacterAbility ability;
 
+        public override bool CanUseAbility => false;
+        public long ElapsedTick => StateMachine.Character.GameManager.TimeManager.CurrentTick - startedAt;
+        public long Duration => ability.Definition.Duration;
+
         public StandardCharacterAbilityCharacterState(StandardCharacterAbility ability, CharacterStateMachine stateMachine) : base(stateMachine)
         {
             this.ability = ability;

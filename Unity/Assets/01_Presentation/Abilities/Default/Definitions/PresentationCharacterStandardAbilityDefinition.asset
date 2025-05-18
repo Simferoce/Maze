@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PresentationCharacterStandardAbilityDefinition
   m_EditorClassIdentifier: 
   id: dcd19582e47b440658ed196ac5fa1d42
-  duration: 2621440
+  duration: 10
+  animation: {fileID: 7400000, guid: 499d5844e8c0412409844061ec82a126, type: 2}

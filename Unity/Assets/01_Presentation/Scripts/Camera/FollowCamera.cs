@@ -7,7 +7,6 @@ namespace Game.Presentation
     [RequireComponent(typeof(Camera))]
     public class FollowCamera : MonoBehaviour
     {
-        private float distance = -0.5f;
         private ServiceRegistry serviceRegistry;
         private bool tracking = false;
 
@@ -44,7 +43,7 @@ namespace Game.Presentation
             }
 
             float scale = serviceRegistry.Get<PresentationConstant>().Scale;
-            Vector3 target = new Vector3(entity.LocalPosition.X / scale, entity.LocalPosition.Y / scale, distance);
+            Vector3 target = new Vector3(entity.LocalPosition.X / scale, entity.LocalPosition.Y / scale, transform.position.z);
             if (!tracking)
             {
                 tracking = true;

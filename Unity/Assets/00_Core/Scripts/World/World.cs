@@ -14,6 +14,7 @@
 
         public void Generate(int seed)
         {
+            //Uneven number spawn point wrong most likely because of int / int vs fixed64 / int in the spawn point
             Vector2 wallSize = new Vector2(Definition.TileSize, Definition.TileSize);
             spawnPoint = (Definition.SpawnPoint / Definition.Scale) * Definition.TileSize * Definition.Scale;
             spawnPoint += new Vector2(Definition.TileSize * Definition.Scale, Definition.TileSize * Definition.Scale);

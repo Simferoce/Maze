@@ -46,6 +46,11 @@ namespace Game.Core
         {
             Transform.LookAt(point);
         }
+
+        public virtual void LookIn(Vector2 direction)
+        {
+            Transform.LookIn(direction);
+        }
     }
 
     public abstract class Entity<T> : Entity

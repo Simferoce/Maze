@@ -43,9 +43,12 @@ namespace Game.Presentation
         public void Flush()
         {
             GameManager gameManager = serviceRegistry.Get<GameProvider>().GameManager;
-            Core.Vector2 mouseGamePosition = serviceRegistry.Get<PlayCamera>().GetGameWorldPosition();
-            axisCommands[Core.ComandType.LookAtPointX] = new Command() { CommandType = Core.ComandType.LookAtPointX, Value = mouseGamePosition.X, Tick = gameManager.TimeManager.CurrentTick };
-            axisCommands[Core.ComandType.LookAtPointY] = new Command() { CommandType = Core.ComandType.LookAtPointY, Value = mouseGamePosition.Y, Tick = gameManager.TimeManager.CurrentTick };
+            UnityEngine.Vector2 lookAtDirection = serviceRegistry.Get<PlayCamera>().GetViewportMousePosition();
+            lookAtDirection *= 2f;
+            lookAtDirection -= UnityEngine.Vector2.one;
+
+            axisCommands[Core.ComandType.LookAtPointX] = new Command() { CommandType = Core.ComandType.LookAtPointX, Value = Fixed64.FromFloat(lookAtDirection.x), Tick = gameManager.TimeManager.CurrentTick };
+            axisCommands[Core.ComandType.LookAtPointY] = new Command() { CommandType = Core.ComandType.LookAtPointY, Value = Fixed64.FromFloat(lookAtDirection.y), Tick = gameManager.TimeManager.CurrentTick };
 
             foreach (KeyValuePair<Core.ComandType, Game.Core.Command> command in axisCommands)
             {

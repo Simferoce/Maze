@@ -56,8 +56,8 @@
 
             Vector2 displacement = direction.Normalized * Avatar.AttributeHandler.Get(AttributeType.MovementSpeed).Value;
 
+            Avatar.LookIn(lookAt);
             Avatar.Move(displacement);
-            Avatar.LookAt(lookAt);
         }
     }
 }

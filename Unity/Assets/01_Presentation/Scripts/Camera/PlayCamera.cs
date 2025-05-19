@@ -23,6 +23,13 @@ namespace Game.Presentation
             this.serviceRegistry = serviceRegistry;
         }
 
+        public UnityEngine.Vector2 GetViewportMousePosition()
+        {
+            UnityEngine.Vector2 mouseScreen = Mouse.current.position.ReadValue();
+            Vector3 viewportPosition = camera.ScreenToViewportPoint(mouseScreen);
+            return viewportPosition;
+        }
+
         public UnityEngine.Vector2 GetWorldMousePosition()
         {
             UnityEngine.Vector2 mouseScreen = Mouse.current.position.ReadValue();

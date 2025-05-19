@@ -39,6 +39,7 @@ namespace Game.Presentation
             serviceRegistry.Register(recordSessionRepository);
             serviceRegistry.Register(gameProvider);
             serviceRegistry.Register(playCamera);
+            serviceRegistry.Register(entityVisualHandler);
 
             Registry registry = presentationRegistry.GenerateGameRegistry();
             gameManager.Initialize(registry);

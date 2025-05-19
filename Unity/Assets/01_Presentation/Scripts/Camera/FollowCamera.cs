@@ -8,13 +8,11 @@ namespace Game.Presentation
     public class FollowCamera : MonoBehaviour
     {
         private ServiceRegistry serviceRegistry;
-        private bool tracking = false;
 
         public void Refresh(ServiceRegistry serviceRegistry)
         {
             this.serviceRegistry = serviceRegistry;
         }
-
 
         private void LateUpdate()
         {
@@ -24,33 +22,31 @@ namespace Game.Presentation
             GameManager gameManager = serviceRegistry.Get<GameProvider>().GameManager;
             if (gameManager == null)
             {
-                tracking = false;
                 return;
             }
 
             Player player = gameManager.WorldManager.GetEntites<Player>().FirstOrDefault();
             if (player == null)
             {
-                tracking = false;
                 return;
             }
 
             Entity entity = gameManager.WorldManager.GetEntityById(player.Avatar.Id);
             if (entity == null)
             {
-                tracking = false;
                 return;
             }
 
+            EntityVisualHandler entityVisualHandler = serviceRegistry.Get<EntityVisualHandler>();
             float scale = serviceRegistry.Get<PresentationConstant>().Scale;
-            Vector3 target = new Vector3(entity.LocalPosition.X.ToFloat() / scale, entity.LocalPosition.Y.ToFloat() / scale, transform.position.z);
-            if (!tracking)
+            if (entityVisualHandler.TryGet<CharacterVisual>(entity.Id, out CharacterVisual characterVisual))
             {
-                tracking = true;
-                this.transform.position = target;
+                this.transform.position = new Vector3(characterVisual.transform.position.x, characterVisual.transform.position.y, this.transform.position.z);
             }
-
-            this.transform.position = Vector3.Lerp(this.transform.position, target, 1 - Mathf.Exp(-serviceRegistry.Get<PresentationConstant>().Damping * Time.deltaTime));
+            else
+            {
+                this.transform.position = new Vector3(entity.LocalPosition.X.ToFloat(), entity.LocalPosition.Y.ToFloat(), this.transform.position.z) / scale;
+            }
         }
     }
 }

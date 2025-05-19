@@ -24,13 +24,13 @@ namespace Game.Presentation
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
-            SynchronizePosition();
+            base.Update();
 
             Core.Entity entity = serviceRegistry.Get<GameProvider>().GameManager.WorldManager.GetEntityById(EntityId);
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, entity.LocalRotation.ToFloat() * Mathf.Rad2Deg - 90);
-            this.transform.rotation = targetRotation;//Quaternion.Lerp(weapon.rotation, targetRotation, 1 - Mathf.Exp(-serviceRegistry.Get<PresentationConstant>().Damping * Time.deltaTime));
+            this.transform.rotation = targetRotation;
 
             upwardAlignedBody.eulerAngles = new Vector3(upwardAlignedBody.eulerAngles.x, upwardAlignedBody.eulerAngles.y, 0);
             SynchronizeAnimation(entity as Character);

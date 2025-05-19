@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Presentation
 {
-    public class EntityVisualHandler : MonoBehaviour, IDisposable
+    public class EntityVisualHandler : MonoBehaviour, IDisposable, IService
     {
         [SerializeField] private Camera camera;
 

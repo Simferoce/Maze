@@ -32,5 +32,15 @@
             Fixed64 angle = Math.ATan2(delta.Y, delta.X);
             LocalRotation = angle;
         }
+
+        public void LookIn(Vector2 direction)
+        {
+            direction = direction.Normalized;
+            if (direction == Vector2.Zero)
+                return;
+
+            Fixed64 angle = Math.ATan2(direction.Y, direction.X);
+            LocalRotation = angle;
+        }
     }
 }
